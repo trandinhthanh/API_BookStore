@@ -47,15 +47,15 @@ public class SanPhamController {
 		return sanPhamService.findById(id);
 	}
 	
-	@GetMapping("/listSanPhamTheoDanhMuc/{catalogID}")
-	public ResponseEntity<List<SanPham>>  getSanPhamsByCatalog(@PathVariable("catalogID") int catalogID){
-		List<SanPham> list = sanPhamService.getSanPhamTheoDanhMuc(catalogID);
+	@GetMapping("/listSanPhamTheoDanhMuc/{idDanhMucSP}")
+	public ResponseEntity<List<SanPham>>  getSanPhamsByCatalog(@PathVariable("idDanhMucSP") int idDanhMucSP){
+		List<SanPham> list = sanPhamService.getSanPhamTheoDanhMuc(idDanhMucSP);
 		return new ResponseEntity<List<SanPham>>(list, HttpStatus.OK);
 	}
 	
-	@GetMapping("/listSanPhamLienQuan/{catalogID}")
-	public ResponseEntity<List<SanPham>>  getRelatedSanPham(@PathVariable("catalogID") int catalogID){
-		List<SanPham> list = sanPhamService.sanPhamLienQuan(catalogID);
+	@GetMapping("/listSanPhamLienQuan/{idDanhMucSP}")
+	public ResponseEntity<List<SanPham>>  getRelatedSanPham(@PathVariable("idDanhMucSP") int idDanhMucSP){
+		List<SanPham> list = sanPhamService.sanPhamLienQuan(idDanhMucSP);
 		return new ResponseEntity<List<SanPham>>(list, HttpStatus.OK);
 	}
 	
