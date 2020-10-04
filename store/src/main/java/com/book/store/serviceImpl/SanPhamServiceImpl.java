@@ -139,7 +139,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 		sanPhamOutput.setMoTa(sanPham.getMoTa());
 		if(sanPham.getIdGiamGia() > 0) {
 			GiamGia giamGia = giamGiaRepository.findById((long) sanPham.getIdGiamGia()).get();
-			if(giamGia.getSoLuong() > 0 && (giamGia.getNgayBatDau().isEqual(LocalDate.now()) || giamGia.getNgayKetThuc().isEqual(LocalDate.now()) || giamGia.getNgayBatDau().isBefore(LocalDate.now()) && (giamGia.getNgayKetThuc().isAfter(LocalDate.now())))){
+			if(giamGia.getNgayBatDau().isEqual(LocalDate.now()) || giamGia.getNgayKetThuc().isEqual(LocalDate.now()) || giamGia.getNgayBatDau().isBefore(LocalDate.now()) && (giamGia.getNgayKetThuc().isAfter(LocalDate.now()))){
 				sanPhamOutput.setGiamGia(giamGia.getPhanTramGiam());
 			}
 		}

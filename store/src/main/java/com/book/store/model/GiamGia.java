@@ -21,9 +21,6 @@ public class GiamGia {
     @Column(name="moTa")
     private String moTa;
 
-    @Column(name="soLuong")
-    private int soLuong;
-
     @Column(name="ngayBatDau")
     private LocalDate ngayBatDau;
 
@@ -75,14 +72,6 @@ public class GiamGia {
 
     public void setMoTa(String moTa) {
         this.moTa = moTa;
-    }
-
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
     }
 
     public LocalDate getNgayBatDau() {
