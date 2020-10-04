@@ -1,68 +1,40 @@
-package com.book.store.model;
+package com.book.store.modelConvert;
 
-import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "SanPham")
-public class SanPham implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
-	@Column(name="id")
+public class SanPhamOutput {
 	private long id;
-	
-	@Column(name="idDanhMucSP")
-	private int idDanhMucSP;
-	
-	@Column(name="tenSanPham")
-	private String tenSanPham;
-	
-	@Column(name="gia")
-	private double gia;
-	
-	@Column(name="moTa")
-	private String moTa;
-	
-	@Column(name="idGiamGia")
-	private int idGiamGia ;
-	
-	@Column(name="luotXem")
-	private int luotXem;
-	
-	@Column(name="luotThich")
-	private int luotThich;
-	
-	@Column(name="soLuong")
-	private int soLuong;
-	
-	@Column(name="ngayTao")
-	private LocalDate ngayTao;
-	
-	@Column(name="nguoiTao")
-	private String nguoiTao;
-	
-	@Column(name="ngayThayDoi")
-	private LocalDate ngayThayDoi;
-	
-	@Column(name="nguoiThayDoi")
-	private String nguoiThayDoi;
-	
-	@Column(name="trangThai")
-	private String trangThai;
 
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
+	private int idDanhMucSP;
+
+	private String tenSanPham;
+
+	private double gia;
+
+	private String moTa;
+
+	private int giamGia ;
+
+	private String linkHinhChinh;
+
+	private List<String> danhSachLinkHinh;
+
+	private int luotXem;
+
+	private int luotThich;
+
+	private int soLuong;
+
+	private LocalDate ngayTao;
+
+	private String nguoiTao;
+
+	private LocalDate ngayThayDoi;
+
+	private String nguoiThayDoi;
+
+	private String trangThai;
 
 	public long getId() {
 		return id;
@@ -104,12 +76,28 @@ public class SanPham implements Serializable {
 		this.moTa = moTa;
 	}
 
-	public int getIdGiamGia() {
-		return idGiamGia;
+	public int getGiamGia() {
+		return giamGia;
 	}
 
-	public void setIdGiamGia(int idGiamGia) {
-		this.idGiamGia = idGiamGia;
+	public void setGiamGia(int giamGia) {
+		this.giamGia = giamGia;
+	}
+
+	public String getLinkHinhChinh() {
+		return linkHinhChinh;
+	}
+
+	public void setLinkHinhChinh(String linkHinhChinh) {
+		this.linkHinhChinh = linkHinhChinh;
+	}
+
+	public List<String> getDanhSachLinkHinh() {
+		return danhSachLinkHinh;
+	}
+
+	public void setDanhSachLinkHinh(List<String> danhSachLinkHinh) {
+		this.danhSachLinkHinh = danhSachLinkHinh;
 	}
 
 	public int getLuotXem() {

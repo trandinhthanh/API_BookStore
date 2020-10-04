@@ -29,11 +29,7 @@ public class DanhMucSPController {
 		List<DanhMucSanPham> list = danhMucSPService.getAllDanhMucSanPham();
 		return new ResponseEntity<List<DanhMucSanPham>>(list, HttpStatus.OK);
 	}
-	
-	@GetMapping("/findImage/{id}")
-    public List<String> getFindImage(@PathVariable("id") long id){
-		return danhMucSPService.findDanhMucSanPhamImage(id);
-    }
+
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
 	 public ResponseEntity<Void> createDanhMucSanPham(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){

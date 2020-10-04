@@ -1,15 +1,15 @@
 package com.book.store.service;
 
-import com.book.store.model.Transaction;
+import com.book.store.model.GiaoDich;
 
 import java.util.List;
 import java.util.Optional;
 
 
 public interface TransactionService {
-	public List<Transaction> getAllTransaction();
-	public Transaction createTransaction(Transaction transaction);
-	public Transaction Update(Transaction transaction);
+	public List<GiaoDich> getAllTransaction();
+	public GiaoDich createTransaction(GiaoDich giaoDich);
+	public GiaoDich Update(GiaoDich giaoDich);
 	public void deleteTransactionById(long id);
-	public Optional<Transaction> findById(long id);
+	public Optional<GiaoDich> findById(long id);
 }

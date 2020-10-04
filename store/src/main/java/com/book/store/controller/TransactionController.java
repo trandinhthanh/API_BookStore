@@ -3,7 +3,7 @@ package com.book.store.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.book.store.model.Transaction;
+import com.book.store.model.GiaoDich;
 import com.book.store.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,42 +27,42 @@ public class TransactionController {
 	private TransactionService transactionService;
 	
 	@GetMapping("/listTransaction")
-	public ResponseEntity<List<Transaction>>  getAllTransaction(){
-		List<Transaction> list = transactionService.getAllTransaction();
-		return new ResponseEntity<List<Transaction>>(list, HttpStatus.OK);
+	public ResponseEntity<List<GiaoDich>>  getAllTransaction(){
+		List<GiaoDich> list = transactionService.getAllTransaction();
+		return new ResponseEntity<List<GiaoDich>>(list, HttpStatus.OK);
 	}
 	
 	@GetMapping("/listTransaction/{id}")
-	public Optional<Transaction> getNewByID(@PathVariable("id") long id){
+	public Optional<GiaoDich> getNewByID(@PathVariable("id") long id){
 		return transactionService.findById(id);
 	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
-	 public ResponseEntity<Void> createTransaction(@RequestBody Transaction transaction){
-		transactionService.createTransaction(transaction);
+	 public ResponseEntity<Void> createTransaction(@RequestBody GiaoDich giaoDich){
+		transactionService.createTransaction(giaoDich);
 	    return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
-	public ResponseEntity<Void> update(@RequestBody Transaction transaction){
-		Optional<Transaction> listTransaction = transactionService.findById(transaction.getId());
+	public ResponseEntity<Void> update(@RequestBody GiaoDich giaoDich){
+		Optional<GiaoDich> listTransaction = transactionService.findById(giaoDich.getId());
 		if (!listTransaction.isPresent()) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		else {
-			transactionService.Update(transaction);
+			transactionService.Update(giaoDich);
 		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
     }
 	//delete
 	@GetMapping("/delete/{id}")
-	public ResponseEntity<Transaction> delete(@PathVariable("id") long id){
-		Optional<Transaction> listTransaction = transactionService.findById(id);
+	public ResponseEntity<GiaoDich> delete(@PathVariable("id") long id){
+		Optional<GiaoDich> listTransaction = transactionService.findById(id);
 		if (!listTransaction.isPresent()) {
-			return new ResponseEntity<Transaction>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<GiaoDich>(HttpStatus.NOT_FOUND);
 		}
 		else 
 			transactionService.deleteTransactionById(id);
-		return new ResponseEntity<Transaction>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<GiaoDich>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -3,7 +3,7 @@ package com.book.store.serviceImpl;
 import java.util.List;
 import java.util.Optional;
 
-import com.book.store.model.Transaction;
+import com.book.store.model.GiaoDich;
 import com.book.store.repository.TransactionRepository;
 import com.book.store.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +16,21 @@ public class TransactionServiceImpl implements TransactionService {
 	private TransactionRepository transactionRepository;
 	
 	@Override
-	public List<Transaction> getAllTransaction() {
+	public List<GiaoDich> getAllTransaction() {
 		
 		return transactionRepository.findAll();
 	}
 
 	@Override
-	public Transaction createTransaction(Transaction transaction) {
+	public GiaoDich createTransaction(GiaoDich giaoDich) {
 		
-		return transactionRepository.save(transaction);
+		return transactionRepository.save(giaoDich);
 	}
 
 	@Override
-	public Transaction Update(Transaction transaction) {
+	public GiaoDich Update(GiaoDich giaoDich) {
 		
-		return transactionRepository.save(transaction);
+		return transactionRepository.save(giaoDich);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public Optional<Transaction> findById(long id) {
+	public Optional<GiaoDich> findById(long id) {
 		
 		return transactionRepository.findById(id);
 	}

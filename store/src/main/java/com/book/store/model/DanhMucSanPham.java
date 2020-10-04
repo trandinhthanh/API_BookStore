@@ -19,8 +19,8 @@ public class DanhMucSanPham {
 	@Column(name="tenDanhMuc")
 	private String tenDanhMuc;
 
-	@Column(name="image")
-	private String image;
+	@Column(name="linkDanhMuc")
+	private String linkDanhMuc;
 
 	public long getId() {
 		return id;
@@ -38,12 +38,11 @@ public class DanhMucSanPham {
 		this.tenDanhMuc = tenDanhMuc;
 	}
 
-	public String getImage() {
-		return image;
+	public String getLinkDanhMuc() {
+		return linkDanhMuc;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setLinkDanhMuc(String linkDanhMuc) {
+		this.linkDanhMuc = linkDanhMuc;
 	}
-	
 }

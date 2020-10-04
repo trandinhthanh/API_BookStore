@@ -21,8 +21,14 @@ public class HinhAnh {
 	@Column(name="tenHinh")
     private String tenHinh;
 
-	@Column(name="tepHinhAnh")
-    private String tepHinhAnh;
+	@Column(name="link")
+    private String link;
+
+	@Column(name="idSanPham")
+	private long idSanPham;
+
+	@Column(name="sapXep")
+	private int sapXep;
 
 	public long getId() {
 		return id;
@@ -40,11 +46,27 @@ public class HinhAnh {
 		this.tenHinh = tenHinh;
 	}
 
-	public String getTepHinhAnh() {
-		return tepHinhAnh;
+	public String getLink() {
+		return link;
 	}
 
-	public void setTepHinhAnh(String tepHinhAnh) {
-		this.tepHinhAnh = tepHinhAnh;
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public long getIdSanPham() {
+		return idSanPham;
+	}
+
+	public void setIdSanPham(long idSanPham) {
+		this.idSanPham = idSanPham;
+	}
+
+	public int getSapXep() {
+		return sapXep;
+	}
+
+	public void setSapXep(int sapXep) {
+		this.sapXep = sapXep;
 	}
 }

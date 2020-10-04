@@ -14,5 +14,4 @@ public interface DanhMucSPService {
 	public void deleteDanhMucSanPhamById(long id);
 	public Optional<DanhMucSanPham> findById(long id);
 	public List<DanhMucSanPham> findDanhMucSanPham(@Param("id") long id);
-	public List<String> findDanhMucSanPhamImage(@Param("id") long id);
 }

@@ -1,14 +1,23 @@
 package com.book.store.serviceImpl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.book.store.model.GiamGia;
+import com.book.store.model.HinhAnh;
 import com.book.store.model.SanPham;
+import com.book.store.modelConvert.SanPhamOutput;
+import com.book.store.repository.GiamGiaRepository;
+import com.book.store.repository.HinhAnhRepository;
 import com.book.store.repository.SanPhamRepository;
 import com.book.store.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -16,60 +25,142 @@ import org.springframework.stereotype.Service;
 public class SanPhamServiceImpl implements SanPhamService {
 	@Autowired
 	private SanPhamRepository sanPhamRepository;
+
+	@Autowired
+	private GiamGiaRepository giamGiaRepository;
+
+	@Autowired
+	private HinhAnhRepository hinhAnhRepository;
 	
 	@Override
-	public List<SanPham> getAllSanPham() {
-		return sanPhamRepository.findAll();
+	public List<SanPhamOutput> getAllSanPham() {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.findAll();
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
 	}
-	@Override
-	public Page<SanPham> getSanPhamByPage(int page) {
-		return sanPhamRepository.findAll(PageRequest.of(page, 12));
-	}
+
 	@Override
 	public SanPham createSanPham(SanPham product) {
+		List<SanPham> listSanPhams = sanPhamRepository.findAll();
+		for( SanPham products : listSanPhams) {
+			if(product.getTenSanPham().equals(products.getTenSanPham())) {
+				return null;
+			}
+		}
 		return sanPhamRepository.save(product);
 	}
 
 	@Override
 	public SanPham update(SanPham product) {
+		Optional<SanPham> listSanPham = sanPhamRepository.findById(product.getId());
+		if (!listSanPham.isPresent()) {
+			return null;
+		}
 		return sanPhamRepository.save(product);
 	}
 
 	@Override
-	public void deleteSanPhamById(long id) {
-		sanPhamRepository.deleteById(id);
+	public boolean deleteSanPhamById(long id) {
+		Optional<SanPham> listSanPham = sanPhamRepository.findById(id);
+		if (!listSanPham.isPresent()) {
+			return false;
+		}
+		try {
+			sanPhamRepository.deleteById(id);
+		}catch (Exception e){
+			return false;
+		}
+		return true;
 	}
 
 	@Override
-	public Optional<SanPham> findById(long id) {
-		return sanPhamRepository.findById(id);
+	public SanPhamOutput findById(long id) {
+		return convertToSanPhamOutput(sanPhamRepository.findById(id).get());
 	}
 
 	@Override
-	public List<SanPham> getSanPhamTheoDanhMuc(int idDanhMucSP ) {
-
-		return sanPhamRepository.getSanPhamTheoDanhMuc(idDanhMucSP);
+	public List<SanPhamOutput> getSanPhamTheoDanhMuc(int idDanhMucSP ) {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.getSanPhamTheoDanhMuc(idDanhMucSP);
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
 	}
 	
 	@Override
-	public List<SanPham> sanPhamNoiBat() {
-
-		return sanPhamRepository.sanPhamNoiBat();
+	public List<SanPhamOutput> sanPhamNoiBat() {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.sanPhamNoiBat();
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
 	}
 	@Override
-	public List<SanPham> sanPhamLienQuan(int idDanhMucSP ) {
-
-		return sanPhamRepository.sanPhamLienQuan(idDanhMucSP);
+	public List<SanPhamOutput> sanPhamLienQuan(int idDanhMucSP ) {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.sanPhamLienQuan(idDanhMucSP);
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
 	}
 
 	@Override
-	public List<SanPham> getNameSanPham() {
-
-		return sanPhamRepository.getTenSanPham();
+	public List<SanPhamOutput> getNameSanPham() {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.getTenSanPham();
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
 	}
 	@Override
-	public List<SanPham> getSanPhamVoiSoLuong() {
-		return sanPhamRepository.getSanPhamVoiSoLuong();
+	public List<SanPhamOutput> getSanPhamVoiSoLuong() {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.getSanPhamVoiSoLuong();
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
+	}
+
+	private SanPhamOutput convertToSanPhamOutput(SanPham sanPham){
+		List<String> links = new ArrayList<>();
+		SanPhamOutput sanPhamOutput = new SanPhamOutput();
+		sanPhamOutput.setId(sanPham.getId());
+		sanPhamOutput.setIdDanhMucSP(sanPham.getIdDanhMucSP());
+		sanPhamOutput.setTenSanPham(sanPham.getTenSanPham());
+		sanPhamOutput.setGia(sanPham.getGia());
+		sanPhamOutput.setMoTa(sanPham.getMoTa());
+		if(sanPham.getIdGiamGia() > 0) {
+			GiamGia giamGia = giamGiaRepository.findById((long) sanPham.getIdGiamGia()).get();
+			if(giamGia.getSoLuong() > 0 && (giamGia.getNgayBatDau().isEqual(LocalDate.now()) || giamGia.getNgayKetThuc().isEqual(LocalDate.now()) || giamGia.getNgayBatDau().isBefore(LocalDate.now()) && (giamGia.getNgayKetThuc().isAfter(LocalDate.now())))){
+				sanPhamOutput.setGiamGia(giamGia.getPhanTramGiam());
+			}
+		}
+		List<HinhAnh> listHinhAnh = hinhAnhRepository.getHinhAnhByIdSanPham(sanPham.getId());
+		for (HinhAnh hinhAnh: listHinhAnh) {
+			if(hinhAnh.getSapXep() == 1){
+				sanPhamOutput.setLinkHinhChinh(hinhAnh.getLink());
+			}else {
+				links.add(hinhAnh.getLink());
+			}
+		}
+		sanPhamOutput.setDanhSachLinkHinh(links);
+		sanPhamOutput.setLuotThich(sanPham.getLuotThich());
+		sanPhamOutput.setLuotXem(sanPham.getLuotXem());
+		sanPhamOutput.setSoLuong(sanPham.getSoLuong());
+		sanPhamOutput.setTrangThai(sanPham.getTrangThai());
+		sanPhamOutput.setNgayTao(sanPham.getNgayTao());
+		sanPhamOutput.setNguoiTao(sanPham.getNguoiTao());
+		sanPhamOutput.setNgayThayDoi(sanPham.getNgayThayDoi());
+		sanPhamOutput.setNguoiThayDoi(sanPham.getNguoiThayDoi());
+		return sanPhamOutput;
 	}
 	
 }

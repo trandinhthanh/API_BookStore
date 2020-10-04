@@ -42,14 +42,7 @@ public class DanhMucSPServiceImpl implements DanhMucSPService {
 
 	@Override
 	public List<DanhMucSanPham> findDanhMucSanPham(long id) {
-		// TODO Auto-generated method stub
 		return danhMucSPRepository.findId(id);
-	}
-	
-	@Override
-	public List<String> findDanhMucSanPhamImage(long id) {
-		// TODO Auto-generated method stub
-		return danhMucSPRepository.findImage(id);
 	}
 
 }
