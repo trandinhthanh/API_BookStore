@@ -40,7 +40,7 @@ public class SanPhamController {
 		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
 	}
 
-	@GetMapping("/listSanPham/{id}")
+	@GetMapping("/getSanPhamByID/{id}")
 	public SanPhamOutput getSanPhamByID(@PathVariable("id") long id){
 		return sanPhamService.findById(id);
 	}
