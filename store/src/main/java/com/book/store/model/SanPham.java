@@ -18,8 +18,8 @@ public class SanPham implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
-	@Column(name="id")
-	private long id;
+	@Column(name="idSanPham")
+	private long idSanPham;
 	
 	@Column(name="idDanhMucSP")
 	private int idDanhMucSP;
@@ -64,12 +64,12 @@ public class SanPham implements Serializable {
 		return serialVersionUID;
 	}
 
-	public long getId() {
-		return id;
+	public long getIdSanPham() {
+		return idSanPham;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setIdSanPham(long idSanPham) {
+		this.idSanPham = idSanPham;
 	}
 
 	public int getIdDanhMucSP() {

@@ -7,7 +7,6 @@ import com.book.store.service.DanhMucSPService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +45,7 @@ public class DanhMucSPController {
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
-		List<DanhMucSanPham> listDanhMucSanPham = danhMucSPService.findDanhMucSanPham(danhMucSP.getId());
+		List<DanhMucSanPham> listDanhMucSanPham = danhMucSPService.findDanhMucSanPham(danhMucSP.getIdDanhMucSP());
 		if (listDanhMucSanPham.size()<=0) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}

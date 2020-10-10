@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +14,8 @@ public class HinhAnh {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	
-	@Column(name="id")
-	private long id;
+	@Column(name="idHinhAnh")
+	private long idHinhAnh;
 	
 	@Column(name="tenHinh")
     private String tenHinh;
@@ -30,12 +29,12 @@ public class HinhAnh {
 	@Column(name="sapXep")
 	private int sapXep;
 
-	public long getId() {
-		return id;
+	public long getIdHinhAnh() {
+		return idHinhAnh;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setIdHinhAnh(long idHinhAnh) {
+		this.idHinhAnh = idHinhAnh;
 	}
 
 	public String getTenHinh() {

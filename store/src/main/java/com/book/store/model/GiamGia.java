@@ -9,8 +9,8 @@ public class GiamGia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Column(name="id")
-    private long id;
+    @Column(name="idGiamGia")
+    private long idGiamGia;
 
     @Column(name="tenGiamGia")
     private String tenGiamGia;
@@ -42,12 +42,12 @@ public class GiamGia {
     @Column(name="trangThai")
     private String trangThai;
 
-    public long getId() {
-        return id;
+    public long getIdGiamGia() {
+        return idGiamGia;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIdGiamGia(long idGiamGia) {
+        this.idGiamGia = idGiamGia;
     }
 
     public String getTenGiamGia() {

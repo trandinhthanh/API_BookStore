@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class SanPhamOutput {
-	private long id;
+	private long idSanPham;
 
 	private int idDanhMucSP;
 
@@ -36,12 +36,12 @@ public class SanPhamOutput {
 
 	private String trangThai;
 
-	public long getId() {
-		return id;
+	public long getIdSanPham() {
+		return idSanPham;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setIdSanPham(long idSanPham) {
+		this.idSanPham = idSanPham;
 	}
 
 	public int getIdDanhMucSP() {

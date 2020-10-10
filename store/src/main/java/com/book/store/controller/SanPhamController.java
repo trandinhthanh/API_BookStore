@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.book.store.model.SanPham;
+import com.book.store.modelConvert.ListSanPhamOutput;
 import com.book.store.modelConvert.SanPhamOutput;
 import com.book.store.repository.SanPhamRepository;
 import com.book.store.service.SanPhamService;
@@ -48,6 +49,12 @@ public class SanPhamController {
 	public ResponseEntity<List<SanPhamOutput>>  getSanPhamsByCatalog(@PathVariable("idDanhMucSP") int idDanhMucSP){
 		List<SanPhamOutput> list = sanPhamService.getSanPhamTheoDanhMuc(idDanhMucSP);
 		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/listSanPhamTheoPage/{linkDanhMuc}/{numberPage}")
+	public ResponseEntity<ListSanPhamOutput>  getSanPhamsByCatalog(@PathVariable("linkDanhMuc") String linkDanhMuc, @PathVariable("numberPage") int numberPage){
+		ListSanPhamOutput list = sanPhamService.getSanPhamTheoPage(linkDanhMuc, numberPage);
+		return new ResponseEntity<ListSanPhamOutput>(list, HttpStatus.OK);
 	}
 
 	@GetMapping("/listSanPhamLienQuan/{idDanhMucSP}")

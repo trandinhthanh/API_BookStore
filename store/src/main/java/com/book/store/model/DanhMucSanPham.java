@@ -13,8 +13,8 @@ public class DanhMucSanPham {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 
-	@Column(name="id")
-	private long id;
+	@Column(name="idDanhMucSP")
+	private long idDanhMucSP;
 
 	@Column(name="tenDanhMuc")
 	private String tenDanhMuc;
@@ -22,12 +22,12 @@ public class DanhMucSanPham {
 	@Column(name="linkDanhMuc")
 	private String linkDanhMuc;
 
-	public long getId() {
-		return id;
+	public long getIdDanhMucSP() {
+		return idDanhMucSP;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setIdDanhMucSP(long idDanhMucSP) {
+		this.idDanhMucSP = idDanhMucSP;
 	}
 
 	public String getTenDanhMuc() {

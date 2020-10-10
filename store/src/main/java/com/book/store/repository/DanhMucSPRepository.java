@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DanhMucSPRepository extends JpaRepository<DanhMucSanPham, Long>{
-	@Query(value ="SELECT c FROM DanhMucSanPham c WHERE c.id = :id") 
+	@Query(value ="SELECT c FROM DanhMucSanPham c WHERE c.idDanhMucSP = :id")
 	List<DanhMucSanPham> findId(@Param("id")long id);
 }

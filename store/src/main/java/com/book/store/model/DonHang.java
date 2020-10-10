@@ -15,8 +15,8 @@ public class DonHang {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
-	@Column(name="id")
-	private long id;
+	@Column(name="idDonHang")
+	private long idDonHang;
 	
 	@Column(name="idNguoiGiaoDich")
 	private long idNguoiGiaoDich;
@@ -42,12 +42,12 @@ public class DonHang {
 	@Column(name="trangThai")
 	private String trangThai;
 
-	public long getId() {
-		return id;
+	public long getIdDonHang() {
+		return idDonHang;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setIdDonHang(long idDonHang) {
+		this.idDonHang = idDonHang;
 	}
 
 	public long getIdNguoiGiaoDich() {

@@ -45,7 +45,7 @@ public class TransactionController {
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody GiaoDich giaoDich){
-		Optional<GiaoDich> listTransaction = transactionService.findById(giaoDich.getId());
+		Optional<GiaoDich> listTransaction = transactionService.findById(giaoDich.getIdGiaoDich());
 		if (!listTransaction.isPresent()) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}

@@ -6,10 +6,8 @@ import java.util.Optional;
 import com.book.store.model.NguoiDung;
 import com.book.store.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +52,7 @@ public class NguoiDungController {
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody NguoiDung nguoiDung, UriComponentsBuilder ucBuilder){
-		Optional<NguoiDung> listNguoiDung = nguoiDungService.findById(nguoiDung.getId());
+		Optional<NguoiDung> listNguoiDung = nguoiDungService.findById(nguoiDung.getIdNguoiDung());
 		if (!listNguoiDung.isPresent()) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}

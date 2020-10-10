@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.book.store.model.GiamGia;
 import com.book.store.model.HinhAnh;
 import com.book.store.model.SanPham;
+import com.book.store.modelConvert.ListSanPhamOutput;
 import com.book.store.modelConvert.SanPhamOutput;
 import com.book.store.repository.GiamGiaRepository;
 import com.book.store.repository.HinhAnhRepository;
@@ -16,8 +17,6 @@ import com.book.store.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -55,7 +54,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 
 	@Override
 	public SanPham update(SanPham product) {
-		Optional<SanPham> listSanPham = sanPhamRepository.findById(product.getId());
+		Optional<SanPham> listSanPham = sanPhamRepository.findById(product.getIdSanPham());
 		if (!listSanPham.isPresent()) {
 			return null;
 		}
@@ -129,10 +128,24 @@ public class SanPhamServiceImpl implements SanPhamService {
 		return outputs;
 	}
 
+	@Override
+	public ListSanPhamOutput getSanPhamTheoPage(String linkDanhMuc, int numberPage){
+		ListSanPhamOutput listSanPhamOutput = new ListSanPhamOutput();
+		int pageSize = 1;
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		Page<SanPham> pageSanPham = sanPhamRepository.findByIdDanhMucSP( linkDanhMuc, PageRequest.of(numberPage - 1, pageSize));
+		for (SanPham s: pageSanPham.getContent()) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		listSanPhamOutput.setSanPhamOutputs(outputs);
+		listSanPhamOutput.setTotalPages(pageSanPham.getTotalPages());
+		return listSanPhamOutput;
+	}
+
 	private SanPhamOutput convertToSanPhamOutput(SanPham sanPham){
 		List<String> links = new ArrayList<>();
 		SanPhamOutput sanPhamOutput = new SanPhamOutput();
-		sanPhamOutput.setId(sanPham.getId());
+		sanPhamOutput.setIdSanPham(sanPham.getIdSanPham());
 		sanPhamOutput.setIdDanhMucSP(sanPham.getIdDanhMucSP());
 		sanPhamOutput.setTenSanPham(sanPham.getTenSanPham());
 		sanPhamOutput.setGia(sanPham.getGia());
@@ -143,10 +156,11 @@ public class SanPhamServiceImpl implements SanPhamService {
 				sanPhamOutput.setGiamGia(giamGia.getPhanTramGiam());
 			}
 		}
-		List<HinhAnh> listHinhAnh = hinhAnhRepository.getHinhAnhByIdSanPham(sanPham.getId());
+		List<HinhAnh> listHinhAnh = hinhAnhRepository.getHinhAnhByIdSanPham(sanPham.getIdSanPham());
 		for (HinhAnh hinhAnh: listHinhAnh) {
 			if(hinhAnh.getSapXep() == 1){
 				sanPhamOutput.setLinkHinhChinh(hinhAnh.getLink());
+				links.add(hinhAnh.getLink());
 			}else {
 				links.add(hinhAnh.getLink());
 			}

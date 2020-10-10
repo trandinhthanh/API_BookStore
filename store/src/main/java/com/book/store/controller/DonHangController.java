@@ -8,7 +8,6 @@ import com.book.store.service.DonHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +43,7 @@ public class DonHangController {
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody DonHang donHang){
-		Optional<DonHang> listDonHang = donHangService.findById(donHang.getId());
+		Optional<DonHang> listDonHang = donHangService.findById(donHang.getIdDonHang());
 		if (!listDonHang.isPresent()) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
