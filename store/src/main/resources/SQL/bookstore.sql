@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 04, 2020 lúc 09:52 AM
+-- Thời gian đã tạo: Th10 11, 2020 lúc 07:31 AM
 -- Phiên bản máy phục vụ: 10.1.39-MariaDB
 -- Phiên bản PHP: 7.3.5
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `danh_muc_san_pham` (
-  `id` bigint(20) NOT NULL,
+  `id_danh_mucsp` bigint(20) NOT NULL,
   `link_danh_muc` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ten_danh_muc` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
@@ -38,9 +38,9 @@ CREATE TABLE `danh_muc_san_pham` (
 -- Đang đổ dữ liệu cho bảng `danh_muc_san_pham`
 --
 
-INSERT INTO `danh_muc_san_pham` (`id`, `link_danh_muc`, `ten_danh_muc`) VALUES
-(1, NULL, 'Khoa Hoc'),
-(2, NULL, 'Tiểu Thuyết');
+INSERT INTO `danh_muc_san_pham` (`id_danh_mucsp`, `link_danh_muc`, `ten_danh_muc`) VALUES
+(1, 'khoaHoc', 'Khoa Hoc'),
+(2, 'tieuThuyet', 'Tiểu Thuyết');
 
 -- --------------------------------------------------------
 
@@ -49,7 +49,7 @@ INSERT INTO `danh_muc_san_pham` (`id`, `link_danh_muc`, `ten_danh_muc`) VALUES
 --
 
 CREATE TABLE `don_hang` (
-  `id` bigint(20) NOT NULL,
+  `id_don_hang` bigint(20) NOT NULL,
   `id_nguoi_giao_dich` bigint(20) DEFAULT NULL,
   `id_san_pham` int(11) DEFAULT NULL,
   `la_nguoi_dung` bit(1) DEFAULT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE `don_hang` (
 --
 
 CREATE TABLE `giam_gia` (
-  `id` bigint(20) NOT NULL,
+  `id_giam_gia` bigint(20) NOT NULL,
   `mo_ta` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ngay_bat_dau` date DEFAULT NULL,
   `ngay_ket_thuc` date DEFAULT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE `giam_gia` (
 -- Đang đổ dữ liệu cho bảng `giam_gia`
 --
 
-INSERT INTO `giam_gia` (`id`, `mo_ta`, `ngay_bat_dau`, `ngay_ket_thuc`, `nguoi_tao`, `nguoi_thay_doi`, `phan_tram_giam`, `ten_giam_gia`, `trang_thai`, `ngay_tao`, `ngay_thay_doi`) VALUES
+INSERT INTO `giam_gia` (`id_giam_gia`, `mo_ta`, `ngay_bat_dau`, `ngay_ket_thuc`, `nguoi_tao`, `nguoi_thay_doi`, `phan_tram_giam`, `ten_giam_gia`, `trang_thai`, `ngay_tao`, `ngay_thay_doi`) VALUES
 (1, 'Giảm Giá nhân 10/10', '2020-10-03', '2020-10-31', 'MThien', NULL, 20, 'Giảm Giá nhân 10/10', NULL, '0000-00-00', NULL);
 
 -- --------------------------------------------------------
@@ -94,7 +94,7 @@ INSERT INTO `giam_gia` (`id`, `mo_ta`, `ngay_bat_dau`, `ngay_ket_thuc`, `nguoi_t
 --
 
 CREATE TABLE `giao_dich` (
-  `id` bigint(20) NOT NULL,
+  `id_giao_dich` bigint(20) NOT NULL,
   `dia_chi_giao_hang` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ghi_chu` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `id_khach_hang` bigint(20) DEFAULT NULL,
@@ -133,7 +133,7 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 --
 
 CREATE TABLE `hinh_anh` (
-  `id` bigint(20) NOT NULL,
+  `id_hinh_anh` bigint(20) NOT NULL,
   `id_san_pham` bigint(20) DEFAULT NULL,
   `link` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `sap_xep` int(11) DEFAULT NULL,
@@ -144,8 +144,13 @@ CREATE TABLE `hinh_anh` (
 -- Đang đổ dữ liệu cho bảng `hinh_anh`
 --
 
-INSERT INTO `hinh_anh` (`id`, `id_san_pham`, `link`, `sap_xep`, `ten_hinh`) VALUES
-(1, 1, 'NGK.jpg', 1, 'Nhà Giả kiêm');
+INSERT INTO `hinh_anh` (`id_hinh_anh`, `id_san_pham`, `link`, `sap_xep`, `ten_hinh`) VALUES
+(1, 1, 'NGK.jpg', 1, 'Nhà Giả kiêm'),
+(2, 1, 'NGK_01.jpg', 2, 'NGK_01'),
+(3, 1, 'NGK_02.jpg', 3, 'NGK_02'),
+(4, 2, 'DNT_01.jpg', 2, 'DNT_01'),
+(5, 2, 'DNT_02.jpg', 3, 'DNT_02'),
+(6, 2, 'DNT.jpg', 1, 'DNT');
 
 -- --------------------------------------------------------
 
@@ -154,7 +159,7 @@ INSERT INTO `hinh_anh` (`id`, `id_san_pham`, `link`, `sap_xep`, `ten_hinh`) VALU
 --
 
 CREATE TABLE `nguoi_dung` (
-  `id` bigint(20) NOT NULL,
+  `id_nguoi_dung` bigint(20) NOT NULL,
   `dia_chi` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `la_quan_ly` bit(1) DEFAULT NULL,
@@ -171,13 +176,15 @@ CREATE TABLE `nguoi_dung` (
 --
 
 CREATE TABLE `san_pham` (
-  `id` bigint(20) NOT NULL,
+  `id_san_pham` bigint(20) NOT NULL,
   `gia` double DEFAULT NULL,
   `id_danh_mucsp` int(11) DEFAULT NULL,
   `id_giam_gia` int(11) DEFAULT NULL,
   `luot_thich` int(11) DEFAULT NULL,
   `luot_xem` int(11) DEFAULT NULL,
   `mo_ta` text COLLATE utf8mb4_german2_ci,
+  `tac_gia` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `nha_xuat_ban` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ngay_tao` date DEFAULT NULL,
   `ngay_thay_doi` date DEFAULT NULL,
   `nguoi_tao` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
@@ -191,9 +198,9 @@ CREATE TABLE `san_pham` (
 -- Đang đổ dữ liệu cho bảng `san_pham`
 --
 
-INSERT INTO `san_pham` (`id`, `gia`, `id_danh_mucsp`, `id_giam_gia`, `luot_thich`, `luot_xem`, `mo_ta`, `ngay_tao`, `ngay_thay_doi`, `nguoi_tao`, `nguoi_thay_doi`, `so_luong`, `ten_san_pham`, `trang_thai`) VALUES
-(1, 79000, 1, 1, 1, 1, 'Tất cả những trải nghiệm trong chuyến phiêu du theo đuổi vận mệnh của mình đã giúp Santiago thấu hiểu được ý nghĩa sâu xa nhất của hạnh phúc, hòa hợp với vũ trụ và con người.', '2020-10-04', NULL, 'MThien', NULL, 100, 'Nhà Giả Kim', NULL),
-(2, 76000, 1, 0, 1, 1, 'Đắc nhân tâm của Dale Carnegie là quyển sách của mọi thời đại và một hiện tượng đáng kinh ngạc trong ngành xuất bản Hoa Kỳ.', '2020-10-04', NULL, 'MThien', NULL, 100, 'Đắc Nhân Tâm', NULL);
+INSERT INTO `san_pham` (`id_san_pham`, `gia`, `id_danh_mucsp`, `id_giam_gia`, `luot_thich`, `luot_xem`, `mo_ta`, `tac_gia`, `nha_xuat_ban`, `ngay_tao`, `ngay_thay_doi`, `nguoi_tao`, `nguoi_thay_doi`, `so_luong`, `ten_san_pham`, `trang_thai`) VALUES
+(1, 79000, 1, 1, 1, 1, 'Tất cả những trải nghiệm trong chuyến phiêu du theo đuổi vận mệnh của mình đã giúp Santiago thấu hiểu được ý nghĩa sâu xa nhất của hạnh phúc, hòa hợp với vũ trụ và con người.', '', '', '2020-10-04', NULL, 'MThien', NULL, 100, 'Nhà Giả Kim', NULL),
+(2, 76000, 1, 0, 1, 1, 'Đắc nhân tâm của Dale Carnegie là quyển sách của mọi thời đại và một hiện tượng đáng kinh ngạc trong ngành xuất bản Hoa Kỳ.', '', '', '2020-10-04', NULL, 'MThien', NULL, 100, 'Đắc Nhân Tâm', NULL);
 
 -- --------------------------------------------------------
 
@@ -222,43 +229,43 @@ CREATE TABLE `slide` (
 -- Chỉ mục cho bảng `danh_muc_san_pham`
 --
 ALTER TABLE `danh_muc_san_pham`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_danh_mucsp`);
 
 --
 -- Chỉ mục cho bảng `don_hang`
 --
 ALTER TABLE `don_hang`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_don_hang`);
 
 --
 -- Chỉ mục cho bảng `giam_gia`
 --
 ALTER TABLE `giam_gia`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_giam_gia`);
 
 --
 -- Chỉ mục cho bảng `giao_dich`
 --
 ALTER TABLE `giao_dich`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_giao_dich`);
 
 --
 -- Chỉ mục cho bảng `hinh_anh`
 --
 ALTER TABLE `hinh_anh`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_hinh_anh`);
 
 --
 -- Chỉ mục cho bảng `nguoi_dung`
 --
 ALTER TABLE `nguoi_dung`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_nguoi_dung`);
 
 --
 -- Chỉ mục cho bảng `san_pham`
 --
 ALTER TABLE `san_pham`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_san_pham`);
 
 --
 -- Chỉ mục cho bảng `slide`
@@ -274,43 +281,43 @@ ALTER TABLE `slide`
 -- AUTO_INCREMENT cho bảng `danh_muc_san_pham`
 --
 ALTER TABLE `danh_muc_san_pham`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_danh_mucsp` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `don_hang`
 --
 ALTER TABLE `don_hang`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_don_hang` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `giam_gia`
 --
 ALTER TABLE `giam_gia`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_giam_gia` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `giao_dich`
 --
 ALTER TABLE `giao_dich`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_giao_dich` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `hinh_anh`
 --
 ALTER TABLE `hinh_anh`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_hinh_anh` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `nguoi_dung`
 --
 ALTER TABLE `nguoi_dung`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nguoi_dung` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `san_pham`
 --
 ALTER TABLE `san_pham`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_san_pham` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `slide`
