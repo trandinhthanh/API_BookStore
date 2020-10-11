@@ -35,6 +35,12 @@ public class SanPham implements Serializable {
 	
 	@Column(name="idGiamGia")
 	private int idGiamGia ;
+
+	@Column(name="tacGia")
+	private String tacGia;
+
+	@Column(name="nhaXuatBan")
+	private String nhaXuatBan;
 	
 	@Column(name="luotXem")
 	private int luotXem;
@@ -110,6 +116,22 @@ public class SanPham implements Serializable {
 
 	public void setIdGiamGia(int idGiamGia) {
 		this.idGiamGia = idGiamGia;
+	}
+
+	public String getTacGia() {
+		return tacGia;
+	}
+
+	public void setTacGia(String tacGia) {
+		this.tacGia = tacGia;
+	}
+
+	public String getNhaXuatBan() {
+		return nhaXuatBan;
+	}
+
+	public void setNhaXuatBan(String nhaXuatBan) {
+		this.nhaXuatBan = nhaXuatBan;
 	}
 
 	public int getLuotXem() {

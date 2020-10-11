@@ -131,7 +131,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Override
 	public ListSanPhamOutput getSanPhamTheoPage(String linkDanhMuc, int numberPage){
 		ListSanPhamOutput listSanPhamOutput = new ListSanPhamOutput();
-		int pageSize = 1;
+		int pageSize = 12;
 		List<SanPhamOutput> outputs = new ArrayList<>();
 		Page<SanPham> pageSanPham = sanPhamRepository.findByIdDanhMucSP( linkDanhMuc, PageRequest.of(numberPage - 1, pageSize));
 		for (SanPham s: pageSanPham.getContent()) {
@@ -142,6 +142,16 @@ public class SanPhamServiceImpl implements SanPhamService {
 		return listSanPhamOutput;
 	}
 
+	@Override
+	public List<SanPhamOutput> findByTenSanPham(String tenSanPham){
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.findByTenSanPhamContainingIgnoreCase(tenSanPham);
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
+	}
+
 	private SanPhamOutput convertToSanPhamOutput(SanPham sanPham){
 		List<String> links = new ArrayList<>();
 		SanPhamOutput sanPhamOutput = new SanPhamOutput();
@@ -150,6 +160,8 @@ public class SanPhamServiceImpl implements SanPhamService {
 		sanPhamOutput.setTenSanPham(sanPham.getTenSanPham());
 		sanPhamOutput.setGia(sanPham.getGia());
 		sanPhamOutput.setMoTa(sanPham.getMoTa());
+		sanPhamOutput.setTacGia(sanPham.getTacGia());
+		sanPhamOutput.setNhaXuatBan(sanPham.getNhaXuatBan());
 		if(sanPham.getIdGiamGia() > 0) {
 			GiamGia giamGia = giamGiaRepository.findById((long) sanPham.getIdGiamGia()).get();
 			if(giamGia.getNgayBatDau().isEqual(LocalDate.now()) || giamGia.getNgayKetThuc().isEqual(LocalDate.now()) || giamGia.getNgayBatDau().isBefore(LocalDate.now()) && (giamGia.getNgayKetThuc().isAfter(LocalDate.now()))){

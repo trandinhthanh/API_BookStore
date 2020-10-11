@@ -13,8 +13,8 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
-	@Query(value = "SELECT p.* FROM san_pham p, danh_muc_san_pham d WHERE d.link_danh_muc = ?1",
-		countQuery = "SELECT count(*) FROM san_pham p, danh_muc_san_pham d WHERE d.link_danh_muc = ?1",
+	@Query(value = "SELECT p.* FROM san_pham p, danh_muc_san_pham d WHERE p.id_danh_mucsp = d.id_danh_mucsp AND d.link_danh_muc = ?1",
+		countQuery = "SELECT count(*) FROM san_pham p, danh_muc_san_pham d WHERE p.id_danh_mucsp = d.id_danh_mucsp AND d.link_danh_muc = ?1",
 		nativeQuery = true)
 	Page<SanPham> findByIdDanhMucSP(String linkDanhMuc, Pageable pageable);
 
@@ -32,5 +32,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
 	
 	@Query(value ="SELECT idSanPham, tenSanPham FROM SanPham")
 	List<SanPham> getTenSanPham();
-	
+
+	List<SanPham> findByTenSanPhamContainingIgnoreCase(String tenSanPham);
+
 }

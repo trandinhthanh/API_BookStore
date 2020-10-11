@@ -16,6 +16,10 @@ public class SanPhamOutput {
 
 	private int giamGia ;
 
+	private String tacGia;
+
+	private String nhaXuatBan;
+
 	private String linkHinhChinh;
 
 	private List<String> danhSachLinkHinh;
@@ -82,6 +86,22 @@ public class SanPhamOutput {
 
 	public void setGiamGia(int giamGia) {
 		this.giamGia = giamGia;
+	}
+
+	public String getTacGia() {
+		return tacGia;
+	}
+
+	public void setTacGia(String tacGia) {
+		this.tacGia = tacGia;
+	}
+
+	public String getNhaXuatBan() {
+		return nhaXuatBan;
+	}
+
+	public void setNhaXuatBan(String nhaXuatBan) {
+		this.nhaXuatBan = nhaXuatBan;
 	}
 
 	public String getLinkHinhChinh() {

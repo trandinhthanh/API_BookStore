@@ -20,4 +20,5 @@ public interface SanPhamService {
 	public List<SanPhamOutput> getNameSanPham();
 	public List<SanPhamOutput> getSanPhamVoiSoLuong();
 	ListSanPhamOutput getSanPhamTheoPage(String linkDanhMuc, int numberPage);
+	List<SanPhamOutput> findByTenSanPham(String tenSanPham);
 }

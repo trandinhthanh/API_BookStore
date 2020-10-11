@@ -52,7 +52,7 @@ public class SanPhamController {
 	}
 
 	@GetMapping("/listSanPhamTheoPage/{linkDanhMuc}/{numberPage}")
-	public ResponseEntity<ListSanPhamOutput>  getSanPhamsByCatalog(@PathVariable("linkDanhMuc") String linkDanhMuc, @PathVariable("numberPage") int numberPage){
+	public ResponseEntity<ListSanPhamOutput>  listSanPhamTheoPage(@PathVariable("linkDanhMuc") String linkDanhMuc, @PathVariable("numberPage") int numberPage){
 		ListSanPhamOutput list = sanPhamService.getSanPhamTheoPage(linkDanhMuc, numberPage);
 		return new ResponseEntity<ListSanPhamOutput>(list, HttpStatus.OK);
 	}
@@ -63,6 +63,11 @@ public class SanPhamController {
 		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
 	}
 
+	@GetMapping("/findByTenSanPham/{tenSanPham}")
+	public ResponseEntity<List<SanPhamOutput>>  findByTenSanPham(@PathVariable("tenSanPham") String tenSanPham){
+		List<SanPhamOutput> list = sanPhamService.findByTenSanPham(tenSanPham);
+		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
+	}
 
 	@GetMapping("/listSanPhamNoiBat")
 	public ResponseEntity<List<SanPhamOutput>>  sanPhamNoiBat(){
