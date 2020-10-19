@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 @Service
 public class XuLyFileServiceImpl implements XuLyFileService {
-    private static final String URL = "D://DATN//image_data//";
+    private static final String URL = System.getProperty("user.dir") + "\\src\\main\\resources\\image\\";
     @Override
     public byte[] getFile(String id) {
         Path path = Paths.get(URL + id);
