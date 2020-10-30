@@ -1,5 +1,6 @@
 package com.book.store.controller;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,21 +38,21 @@ public class NguoiDungController {
 	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
-	 public ResponseEntity<Void> createNguoiDung(@RequestBody NguoiDung nguoiDung, UriComponentsBuilder ucBuilder){
+	 public ResponseEntity<Boolean> createNguoiDung(@RequestBody NguoiDung nguoiDung ){
+		nguoiDung.setMatKhau(Base64.getEncoder().encodeToString(nguoiDung.getMatKhau().getBytes()));
 		List<NguoiDung> listNguoiDung = nguoiDungService.getAllNguoiDung();
-		for( NguoiDung nd : listNguoiDung)
-			if(nguoiDung.getTenNguoiDung().equals(nd.getTenNguoiDung())) {
-				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		for( NguoiDung nd : listNguoiDung){
+			if(nguoiDung.getEmail().equals(nd.getEmail())) {
+				return new ResponseEntity<Boolean>(false ,HttpStatus.NOT_FOUND);
 			}
-			else {
-				nguoiDungService.createNguoiDung(nguoiDung);
-			} 
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		}
+		nguoiDungService.createNguoiDung(nguoiDung);
+		return new ResponseEntity<Boolean>(true ,HttpStatus.CREATED);
 	}
 	
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
-	public ResponseEntity<Void> update(@RequestBody NguoiDung nguoiDung, UriComponentsBuilder ucBuilder){
+	public ResponseEntity<Void> update(@RequestBody NguoiDung nguoiDung){
 		Optional<NguoiDung> listNguoiDung = nguoiDungService.findById(nguoiDung.getIdNguoiDung());
 		if (!listNguoiDung.isPresent()) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
@@ -71,5 +72,16 @@ public class NguoiDungController {
 		else
 			nguoiDungService.deleteNguoiDungById(id);
 		return new ResponseEntity<NguoiDung>(HttpStatus.NO_CONTENT);
+	}
+
+	@PostMapping(value="/dangNhap",headers="Accept=application/json")
+	public ResponseEntity<Void> dangNhap(@RequestBody NguoiDung nguoiDung ){
+		List<NguoiDung> listNguoiDung = nguoiDungService.getAllNguoiDung();
+		for( NguoiDung nd : listNguoiDung){
+			if(nguoiDung.getEmail().equals(nd.getEmail()) && nguoiDung.getMatKhau().equals(nd.getMatKhau())) {
+				return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+			}
+		}
+		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 	}
 }

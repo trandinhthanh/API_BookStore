@@ -1,5 +1,6 @@
 package com.book.store.serviceImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	
 	@Override
 	public NguoiDung createNguoiDung(NguoiDung nguoiDung) {
+		nguoiDung.setNgayTao(LocalDate.now());
 		return nguoiDungRepository.save(nguoiDung);
 	}
 

@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.book.store.model.SanPham;
 import com.book.store.modelConvert.ListSanPhamOutput;
 import com.book.store.modelConvert.SanPhamOutput;
-import com.book.store.repository.SanPhamRepository;
 import com.book.store.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
