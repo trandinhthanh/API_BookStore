@@ -37,7 +37,17 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 		
 		return nguoiDungRepository.findById(id);
 	}
-	
+
+	@Override
+	public NguoiDung kiemTraDangNhap(String email, String matKhau) {
+		NguoiDung nguoiDung = nguoiDungRepository.kiemTraDangNhap(email, matKhau);
+		if(nguoiDung != null){
+			nguoiDung.setMatKhau(null);
+			return nguoiDung;
+		}
+		return null;
+	}
+
 	@Override
 	public List<NguoiDung> getAllNguoiDung() {
 		return nguoiDungRepository.findAll();

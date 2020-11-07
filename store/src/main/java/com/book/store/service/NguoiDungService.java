@@ -12,4 +12,5 @@ public interface NguoiDungService {
 	public NguoiDung update(NguoiDung nguoiDung);
 	public void deleteNguoiDungById(long id);
 	public Optional<NguoiDung> findById(long id);
+	NguoiDung kiemTraDangNhap(String email, String matKhau);
 }
