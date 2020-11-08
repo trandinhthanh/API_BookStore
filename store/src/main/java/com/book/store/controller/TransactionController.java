@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.book.store.model.GiaoDich;
+import com.book.store.modelConvert.ChiTietDonHangOutput;
 import com.book.store.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,5 +65,11 @@ public class TransactionController {
 		else 
 			transactionService.deleteTransactionById(id);
 		return new ResponseEntity<GiaoDich>(HttpStatus.NO_CONTENT);
+	}
+
+	@GetMapping("/getChiTiet/{id}")
+	public ResponseEntity<ChiTietDonHangOutput> getDetailById(@PathVariable("id") long id){
+		ChiTietDonHangOutput detailNguoiDung = transactionService.chiTietNguoiDung(id);
+		return new ResponseEntity<ChiTietDonHangOutput>(detailNguoiDung, HttpStatus.NOT_FOUND);
 	}
 }
