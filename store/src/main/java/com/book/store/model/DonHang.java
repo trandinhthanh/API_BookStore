@@ -25,7 +25,7 @@ public class DonHang {
 	private boolean laNguoiDung;
 	
 	@Column(name="idSanPham")
-	private int idSanPham;
+	private long idSanPham;
 	
 	@Column(name="soLuong")
 	private int soLuong;
@@ -66,11 +66,11 @@ public class DonHang {
 		this.laNguoiDung = laNguoiDung;
 	}
 
-	public int getIdSanPham() {
+	public long getIdSanPham() {
 		return idSanPham;
 	}
 
-	public void setIdSanPham(int idSanPham) {
+	public void setIdSanPham(long idSanPham) {
 		this.idSanPham = idSanPham;
 	}
 

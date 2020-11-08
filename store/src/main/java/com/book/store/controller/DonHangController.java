@@ -30,9 +30,9 @@ public class DonHangController {
 		return new ResponseEntity<List<DonHang>>(list, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getOrder/{id}")
-	public Optional<DonHang> getProductByID(@PathVariable("id") long id){
-		return donHangService.findById(id);
+	@GetMapping("/getDonHangByIdNguoiDung/{idNguoiDung}")
+	public List<DonHang> getByIdNguoiGiaoDich(@PathVariable("idNguoiDung") long idNguoiDung){
+		return donHangService.findByIdNguoiGiaoDich(idNguoiDung);
 	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
@@ -43,24 +43,19 @@ public class DonHangController {
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody DonHang donHang){
-		Optional<DonHang> listDonHang = donHangService.findById(donHang.getIdDonHang());
-		if (!listDonHang.isPresent()) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		boolean statusUpdate = donHangService.updateDonHang(donHang);
+		if (statusUpdate) {
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
-		else {
-			donHangService.update(donHang);
-		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+
     }
 	//delete
-	@GetMapping("/delete/{id}")
-	public ResponseEntity<DonHang> delete(@PathVariable("id") long id){
-		Optional<DonHang> listDonHang = donHangService.findById(id);
-		if (!listDonHang.isPresent()) {
-			return new ResponseEntity<DonHang>(HttpStatus.NOT_FOUND);
+	@PostMapping(value="/delete",headers="Accept=application/json")
+	public ResponseEntity<DonHang> delete(@RequestBody DonHang donHang){
+		if (donHangService.deleteDonHang(donHang)) {
+			return new ResponseEntity<DonHang>(HttpStatus.OK);
 		}
-		else 
-			donHangService.deleteDonHangById(id);
-		return new ResponseEntity<DonHang>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<DonHang>(HttpStatus.NOT_FOUND);
 	}
 }

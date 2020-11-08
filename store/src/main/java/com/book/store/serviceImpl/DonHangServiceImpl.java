@@ -1,5 +1,6 @@
 package com.book.store.serviceImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,26 +23,32 @@ public class DonHangServiceImpl implements DonHangService {
 	}
 
 	@Override
-	public DonHang createDonHang(DonHang DonHang) {
-		
-		return donHangRepository.save(DonHang);
+	public DonHang createDonHang(DonHang donHang) {
+		donHang.setNgayTao(LocalDate.now());
+		donHang.setTrangThai("0");
+		return donHangRepository.save(donHang);
 	}
 
 	@Override
-	public DonHang update(DonHang DonHang) {
-		
-		return donHangRepository.save(DonHang);
+	public boolean updateDonHang(DonHang donHang) {
+		int status = donHangRepository.updateSoLuong(donHang.getSoLuong(), donHang.getIdNguoiGiaoDich(), donHang.getIdSanPham());
+		if(status > 0){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
-	public void deleteDonHangById(long id) {
-		
-		donHangRepository.deleteById(id);
+	public boolean deleteDonHang(DonHang donHang) {
+		int status = donHangRepository.deleteDongHang(donHang);
+		if(status > 0){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
-	public Optional<DonHang> findById(long id) {
-		
-		return donHangRepository.findById(id);
+	public List<DonHang> findByIdNguoiGiaoDich(long idNguoiGiaoDich) {
+		return donHangRepository.findByIdNguoiGiaoDichContaining(idNguoiGiaoDich);
 	}
 }
