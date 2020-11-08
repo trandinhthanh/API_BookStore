@@ -40,8 +40,10 @@ public class TransactionController {
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
 	 public ResponseEntity<Void> createTransaction(@RequestBody GiaoDich giaoDich){
-		transactionService.createTransaction(giaoDich);
-	    return new ResponseEntity<Void>(HttpStatus.CREATED);
+		if(transactionService.createTransaction(giaoDich)){
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		}
+	    return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
@@ -70,6 +72,6 @@ public class TransactionController {
 	@GetMapping("/getChiTiet/{id}")
 	public ResponseEntity<ChiTietDonHangOutput> getDetailById(@PathVariable("id") long id){
 		ChiTietDonHangOutput detailNguoiDung = transactionService.chiTietNguoiDung(id);
-		return new ResponseEntity<ChiTietDonHangOutput>(detailNguoiDung, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<ChiTietDonHangOutput>(detailNguoiDung, HttpStatus.OK);
 	}
 }

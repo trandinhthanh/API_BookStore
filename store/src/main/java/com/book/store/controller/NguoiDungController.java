@@ -39,7 +39,7 @@ public class NguoiDungController {
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
 	 public ResponseEntity<Boolean> createNguoiDung(@RequestBody NguoiDung nguoiDung ){
-		nguoiDung.setMatKhau(Base64.getEncoder().encodeToString(nguoiDung.getMatKhau().getBytes()));
+//		nguoiDung.setMatKhau(Base64.getEncoder().encodeToString(nguoiDung.getMatKhau().getBytes()));
 		List<NguoiDung> listNguoiDung = nguoiDungService.getAllNguoiDung();
 		for( NguoiDung nd : listNguoiDung){
 			if(nguoiDung.getEmail().equals(nd.getEmail())) {

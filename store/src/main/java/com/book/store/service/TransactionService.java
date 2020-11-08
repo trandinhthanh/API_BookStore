@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface TransactionService {
 	public List<GiaoDich> getAllTransaction();
-	public GiaoDich createTransaction(GiaoDich giaoDich);
+	public boolean createTransaction(GiaoDich giaoDich);
 	public GiaoDich Update(GiaoDich giaoDich);
 	public void deleteTransactionById(long id);
 	public Optional<GiaoDich> findById(long id);

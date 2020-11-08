@@ -36,17 +36,11 @@ public class GiaoDich {
 	@Column(name="soTien")
 	private double soTien;
 	
-	@Column(name="loaiThanhToan")
-	private String loaiThanhToan;
-	
-	@Column(name="thongTinThanhToan")
-	private String thongTinThanhToan;
+	@Column(name="email")
+	private String email;
 	
 	@Column(name="ghiChu")
 	private String ghiChu;
-	
-	@Column(name="maBaoMat")
-	private String maBaoMat;
 	
 	@Column(name="ngayTao")
 	private LocalDate ngayTao;
@@ -107,20 +101,12 @@ public class GiaoDich {
 		this.soTien = soTien;
 	}
 
-	public String getLoaiThanhToan() {
-		return loaiThanhToan;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setLoaiThanhToan(String loaiThanhToan) {
-		this.loaiThanhToan = loaiThanhToan;
-	}
-
-	public String getThongTinThanhToan() {
-		return thongTinThanhToan;
-	}
-
-	public void setThongTinThanhToan(String thongTinThanhToan) {
-		this.thongTinThanhToan = thongTinThanhToan;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getGhiChu() {
@@ -129,14 +115,6 @@ public class GiaoDich {
 
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
-	}
-
-	public String getMaBaoMat() {
-		return maBaoMat;
-	}
-
-	public void setMaBaoMat(String maBaoMat) {
-		this.maBaoMat = maBaoMat;
 	}
 
 	public LocalDate getNgayTao() {
