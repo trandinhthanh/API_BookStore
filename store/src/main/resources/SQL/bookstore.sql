@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 11, 2020 lúc 07:31 AM
+-- Thời gian đã tạo: Th10 08, 2020 lúc 04:38 PM
 -- Phiên bản máy phục vụ: 10.1.39-MariaDB
 -- Phiên bản PHP: 7.3.5
 
@@ -51,7 +51,7 @@ INSERT INTO `danh_muc_san_pham` (`id_danh_mucsp`, `link_danh_muc`, `ten_danh_muc
 CREATE TABLE `don_hang` (
   `id_don_hang` bigint(20) NOT NULL,
   `id_nguoi_giao_dich` bigint(20) DEFAULT NULL,
-  `id_san_pham` int(11) DEFAULT NULL,
+  `id_san_pham` bigint(20) DEFAULT NULL,
   `la_nguoi_dung` bit(1) DEFAULT NULL,
   `ngay_tao` date DEFAULT NULL,
   `nguoi_tao` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
@@ -59,6 +59,15 @@ CREATE TABLE `don_hang` (
   `tien` double DEFAULT NULL,
   `trang_thai` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `don_hang`
+--
+
+INSERT INTO `don_hang` (`id_don_hang`, `id_nguoi_giao_dich`, `id_san_pham`, `la_nguoi_dung`, `ngay_tao`, `nguoi_tao`, `so_luong`, `tien`, `trang_thai`) VALUES
+(21, 5, 1, b'0', '2020-11-08', NULL, 12, 0, '0'),
+(22, 5, 2, b'0', '2020-11-08', NULL, 3, 0, '0'),
+(23, 1, 1, b'0', '2020-11-08', NULL, 5, 0, '0');
 
 -- --------------------------------------------------------
 
@@ -98,15 +107,20 @@ CREATE TABLE `giao_dich` (
   `dia_chi_giao_hang` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ghi_chu` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `id_khach_hang` bigint(20) DEFAULT NULL,
-  `loai_thanh_toan` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `ma_bao_mat` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ngay_tao` date DEFAULT NULL,
   `so_dien_thoai` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `so_tien` double DEFAULT NULL,
   `ten_khach_hang` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `thong_tin_thanh_toan` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `trang_thai` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `giao_dich`
+--
+
+INSERT INTO `giao_dich` (`id_giao_dich`, `dia_chi_giao_hang`, `ghi_chu`, `id_khach_hang`, `ngay_tao`, `so_dien_thoai`, `so_tien`, `ten_khach_hang`, `email`, `trang_thai`) VALUES
+(1, '59/6Y ấp chánh 1, Xã Tân Xuân', '', 1, '2020-11-08', '0348868611', 395000, 'Thien', 'minhthiennguyen1997@gmail.com', '0');
 
 -- --------------------------------------------------------
 
@@ -168,6 +182,16 @@ CREATE TABLE `nguoi_dung` (
   `so_dien_thoai` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `ten_nguoi_dung` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `nguoi_dung`
+--
+
+INSERT INTO `nguoi_dung` (`id_nguoi_dung`, `dia_chi`, `email`, `la_quan_ly`, `mat_khau`, `ngay_tao`, `so_dien_thoai`, `ten_nguoi_dung`) VALUES
+(1, '59/6Y ấp chánh 1, Xã Tân Xuân', 'minhthiennguyen1997@gmail.com', b'0', '111', '2020-10-24', '0348868611', 'Thien'),
+(3, '1', 'thu@gmail.com', b'0', '1', '2020-10-24', '111', 'Thu'),
+(4, '11', 'viphan@gmail.com', b'0', '1', '2020-11-07', '111', 'Phan Vi'),
+(5, '11', 'thanh@gmail.com', b'0', '1', '2020-11-07', '111', 'Thanh');
 
 -- --------------------------------------------------------
 
@@ -287,7 +311,7 @@ ALTER TABLE `danh_muc_san_pham`
 -- AUTO_INCREMENT cho bảng `don_hang`
 --
 ALTER TABLE `don_hang`
-  MODIFY `id_don_hang` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_don_hang` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT cho bảng `giam_gia`
@@ -299,7 +323,7 @@ ALTER TABLE `giam_gia`
 -- AUTO_INCREMENT cho bảng `giao_dich`
 --
 ALTER TABLE `giao_dich`
-  MODIFY `id_giao_dich` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_giao_dich` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `hinh_anh`
@@ -311,7 +335,7 @@ ALTER TABLE `hinh_anh`
 -- AUTO_INCREMENT cho bảng `nguoi_dung`
 --
 ALTER TABLE `nguoi_dung`
-  MODIFY `id_nguoi_dung` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nguoi_dung` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `san_pham`
