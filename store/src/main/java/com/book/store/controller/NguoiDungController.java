@@ -1,10 +1,10 @@
 package com.book.store.controller;
 
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 import com.book.store.model.NguoiDung;
+import com.book.store.modelConvert.NguoiDungInput;
+import com.book.store.modelConvert.NguoiDungOutput;
 import com.book.store.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("nguoiDung")
@@ -33,8 +32,9 @@ public class NguoiDungController {
 	}
 	
 	@GetMapping("/getNguoiDung/{id}")
-	public Optional<NguoiDung> getProductByID(@PathVariable("id") long id){
-		return nguoiDungService.findById(id);
+	public ResponseEntity<NguoiDungOutput> getProductByID(@PathVariable("id") long id){
+		NguoiDungOutput output = nguoiDungService.findById(id);
+		return new ResponseEntity<NguoiDungOutput>(output, HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
@@ -52,26 +52,30 @@ public class NguoiDungController {
 	
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
-	public ResponseEntity<Void> update(@RequestBody NguoiDung nguoiDung){
-		Optional<NguoiDung> listNguoiDung = nguoiDungService.findById(nguoiDung.getIdNguoiDung());
-		if (!listNguoiDung.isPresent()) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<Boolean> update(@RequestBody NguoiDung nguoiDung){
+		if (nguoiDungService.update(nguoiDung)) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		else {
-			nguoiDungService.update(nguoiDung);
-		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+
     }
+
+
+	@PostMapping(value="/editUserByUser",headers="Accept=application/json")
+	public ResponseEntity<Boolean> update(@RequestBody NguoiDungInput input){
+		if (nguoiDungService.editUserByUser(input)) {
+			return new ResponseEntity<>(true ,HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false ,HttpStatus.NOT_FOUND);
+	}
+
 	//delete
 	@GetMapping("/delete/{id}")
 	public ResponseEntity<NguoiDung> delete(@PathVariable("id") long id){
-		Optional<NguoiDung> listNguoiDung = nguoiDungService.findById(id);
-		if (!listNguoiDung.isPresent()) {
-			return new ResponseEntity<NguoiDung>(HttpStatus.NOT_FOUND);
+		if (nguoiDungService.deleteNguoiDungById(id)) {
+			return new ResponseEntity<NguoiDung>(HttpStatus.OK);
 		}
-		else
-			nguoiDungService.deleteNguoiDungById(id);
-		return new ResponseEntity<NguoiDung>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<NguoiDung>(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping(value="/dangNhap",headers="Accept=application/json")

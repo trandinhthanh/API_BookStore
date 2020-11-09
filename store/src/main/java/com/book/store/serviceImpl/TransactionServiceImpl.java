@@ -10,7 +10,10 @@ import com.book.store.model.GiaoDich;
 import com.book.store.model.NguoiDung;
 import com.book.store.modelConvert.ChiTietDonHang;
 import com.book.store.modelConvert.ChiTietDonHangOutput;
+import com.book.store.modelConvert.DonHangOutput;
 import com.book.store.modelConvert.SanPhamThanhTien;
+import com.book.store.repository.DonHangRepository;
+import com.book.store.repository.SanPhamRepository;
 import com.book.store.repository.TransactionRepository;
 import com.book.store.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +23,19 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 
-
+@Transactional
 @Service
 public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
+
+	@Autowired
+	DonHangRepository donHangRepository;
+
+	@Autowired
+	SanPhamRepository sanPhamRepository;
 
 	private MailConfig mailConfig = new MailConfig();
 
@@ -40,10 +50,11 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public boolean createTransaction(GiaoDich giaoDich) {
 		try {
-			giaoDich.setTrangThai("0");
-			giaoDich.setNgayTao(LocalDate.now());
-			GiaoDich giaoDichOutput =  transactionRepository.save(giaoDich);
-			sendMailDonHang(giaoDichOutput);
+				giaoDich.setTrangThai("0");
+				giaoDich.setNgayTao(LocalDate.now());
+				GiaoDich giaoDichOutput = transactionRepository.save(giaoDich);
+				sendMailDonHang(giaoDichOutput);
+				donHangRepository.updateByIdNguoiGiaoDich(giaoDich.getIdKhachHang());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -69,9 +80,9 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public ChiTietDonHangOutput chiTietNguoiDung(long id) {
-		NguoiDung nguoiDung = transactionRepository.getChiTietKhachHangInterface(id);
-		List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(id);
+	public ChiTietDonHangOutput chiTietNguoiDung(long idNguoiGiaoDich) {
+		NguoiDung nguoiDung = transactionRepository.getChiTietKhachHangInterface(idNguoiGiaoDich);
+		List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(idNguoiGiaoDich);
 
 		ChiTietDonHangOutput output = new ChiTietDonHangOutput();
 		output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
@@ -89,7 +100,6 @@ public class TransactionServiceImpl implements TransactionService {
 			if ((donHang.getNgayBatDau() != null && donHang.getNgayBatDau().compareTo(toDay) > 0) &&
 					(donHang.getNgayKetThuc() !=  null && donHang.getNgayKetThuc().compareTo(toDay) <0)
 					&&  donHang.getPhanTramGiam() != 0) {
-				int giamGia = donHang.getPhanTramGiam();
 				thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (donHang.getPhanTramGiam() / 100);
 			} else {
 				thanhTien = (donHang.getSoLuong() * donHang.getGia());
@@ -112,14 +122,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         // Prepare the evaluation context
         final Context ctx = new Context(locale);
-        ctx.setVariable("idGiaoDich", giaoDich.getIdGiaoDich());
-        ctx.setVariable("trangThai", giaoDich.getTrangThai());
-		ctx.setVariable("tenKhachHang", giaoDich.getTenKhachHang());
-		ctx.setVariable("soDienThoai", giaoDich.getSoDienThoai());
-		ctx.setVariable("diaChiGiaoHang", giaoDich.getDiaChiGiaoHang());
+        ctx.setVariable("giaoDich", giaoDich);
 		ctx.setVariable("soTien", formatMoney(giaoDich.getSoTien()));
-		ctx.setVariable("email", giaoDich.getEmail());
-		ctx.setVariable("ghiChu", giaoDich.getGhiChu());
+		ctx.setVariable("sanPhams", getDongHangByIdNguoiDung(giaoDich.getIdKhachHang()));
 
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = this.mailConfig.getJavaMailSender().createMimeMessage();
@@ -128,16 +133,38 @@ public class TransactionServiceImpl implements TransactionService {
         message.setTo(giaoDich.getEmail());
 
         // Create the HTML body using Thymeleaf
-        final String htmlContent = this.springMailConfig.emailTemplateEngine().process("email.html", ctx);
+        final String htmlContent = this.springMailConfig.emailTemplateEngine().process("sendEmailOrder", ctx);
         message.setText(htmlContent, true); // true = isHtml
-
-        // Add the inline image, referenced from the HTML code as "cid:${imageResourceName}"
-//        final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
-//        message.addInline(imageResourceName, imageSource, imageContentType);
 
         // Send mail
         this.mailConfig.getJavaMailSender().send(mimeMessage);
     }
+
+    private List<DonHangOutput> getDongHangByIdNguoiDung(long idNguoiDung){
+		LocalDate toDay = LocalDate.now();
+		List<DonHangOutput> outputs = new ArrayList<>();
+		List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(idNguoiDung);
+		for (ChiTietDonHang donHang: chiTietDonHang) {
+			double thanhTien = 0;
+			DonHangOutput donHangOutput = new DonHangOutput();
+
+			//giảm sl nếu đã mua thành công
+			sanPhamRepository.updateSoLuongByIdSanPham(donHang.getIdSanPham(), donHang.getSoLuong());
+			donHangOutput.setTenSanPham(donHang.getTenSanPham());
+			donHangOutput.setSoLuong(donHang.getSoLuong());
+			if ((donHang.getNgayBatDau() != null && donHang.getNgayBatDau().compareTo(toDay) > 0) &&
+					(donHang.getNgayKetThuc() !=  null && donHang.getNgayKetThuc().compareTo(toDay) <0)
+					&&  donHang.getPhanTramGiam() != 0) {
+				thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (donHang.getPhanTramGiam() / 100);
+				donHangOutput.setThanhTien(formatMoney(thanhTien));
+			} else {
+				thanhTien = (donHang.getSoLuong() * donHang.getGia());
+				donHangOutput.setThanhTien(formatMoney(thanhTien));
+			}
+			outputs.add(donHangOutput);
+		}
+		return outputs;
+	}
 
     private String formatMoney(double tien){
 		DecimalFormat formatter = new DecimalFormat("###,###,###");

@@ -3,6 +3,7 @@ package com.book.store.modelConvert;
 import java.time.LocalDate;
 
 public interface ChiTietDonHang {
+    long getIdSanPham();
     int getSoLuong();
     double getGia();
     String getTenSanPham();

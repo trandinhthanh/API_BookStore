@@ -24,5 +24,10 @@ public interface DonHangRepository extends JpaRepository<DonHang, Long>{
     @Query(value ="DELETE FROM DonHang WHERE trangThai = '0' AND idNguoiGiaoDich = :#{#dh.idNguoiGiaoDich} AND idSanPham = :#{#dh.idSanPham}")
     Integer deleteDongHang(@Param("dh")DonHang dh);
 
-    List<DonHang> findByIdNguoiGiaoDichContaining(long idNguoiGiaoDich);
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE DonHang SET trangThai = '1' WHERE trangThai = '0' AND idNguoiGiaoDich = :idNguoiGiaoDich")
+    Integer updateByIdNguoiGiaoDich(@Param("idNguoiGiaoDich")long idNguoiGiaoDich);
+
+    List<DonHang> findByIdNguoiGiaoDich(long idNguoiGiaoDich);
 }

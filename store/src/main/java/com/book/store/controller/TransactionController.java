@@ -69,9 +69,9 @@ public class TransactionController {
 		return new ResponseEntity<GiaoDich>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("/getChiTiet/{id}")
-	public ResponseEntity<ChiTietDonHangOutput> getDetailById(@PathVariable("id") long id){
-		ChiTietDonHangOutput detailNguoiDung = transactionService.chiTietNguoiDung(id);
+	@GetMapping("/getChiTiet/{idNguoiGiaoDich}")
+	public ResponseEntity<ChiTietDonHangOutput> getDetailById(@PathVariable("idNguoiGiaoDich") long idNguoiGiaoDich){
+		ChiTietDonHangOutput detailNguoiDung = transactionService.chiTietNguoiDung(idNguoiGiaoDich);
 		return new ResponseEntity<ChiTietDonHangOutput>(detailNguoiDung, HttpStatus.OK);
 	}
 }

@@ -1,13 +1,11 @@
 package com.book.store.config;
 
-import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.thymeleaf.TemplateEngine;
@@ -34,7 +32,7 @@ public class SpringMailConfig implements ApplicationContextAware, EnvironmentAwa
     public TemplateEngine emailTemplateEngine() {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         // Resolver for HTML editable emails (which will be treated as a String)
-        templateEngine.addTemplateResolver(stringTemplateResolver());
+        templateEngine.addTemplateResolver(htmlTemplateResolver());
         // Message source, internationalization specific to emails
         templateEngine.setTemplateEngineMessageSource(emailMessageSource());
         return templateEngine;
@@ -44,20 +42,10 @@ public class SpringMailConfig implements ApplicationContextAware, EnvironmentAwa
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setOrder(Integer.valueOf(2));
-        templateResolver.setResolvablePatterns(Collections.singleton("html/*"));
-        templateResolver.setPrefix("/mail/");
+        templateResolver.setPrefix("/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setCacheable(false);
-        return templateResolver;
-    }
-
-    private ITemplateResolver stringTemplateResolver() {
-        final StringTemplateResolver templateResolver = new StringTemplateResolver();
-        templateResolver.setOrder(Integer.valueOf(3));
-        // No resolvable pattern, will simply process as a String template everything not previously matched
-        templateResolver.setTemplateMode("HTML5");
         templateResolver.setCacheable(false);
         return templateResolver;
     }

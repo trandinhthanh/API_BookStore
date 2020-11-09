@@ -10,7 +10,9 @@ import com.book.store.service.DonHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 
+@Transactional
 @Service
 public class DonHangServiceImpl implements DonHangService {
 	@Autowired
@@ -49,6 +51,6 @@ public class DonHangServiceImpl implements DonHangService {
 
 	@Override
 	public List<DonHang> findByIdNguoiGiaoDich(long idNguoiGiaoDich) {
-		return donHangRepository.findByIdNguoiGiaoDichContaining(idNguoiGiaoDich);
+		return donHangRepository.findByIdNguoiGiaoDich(idNguoiGiaoDich);
 	}
 }
