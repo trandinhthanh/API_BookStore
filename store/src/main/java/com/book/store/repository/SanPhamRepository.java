@@ -37,8 +37,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
 
 	@Transactional
 	@Modifying
-	@Query(value ="UPDATE DonHang SET soLuong = (soLuong - :soLuongGiam) WHERE idSanPham = :idSanPham")
-	Integer updateSoLuongByIdSanPham(@Param("idSanPham")long idSanPham, @Param("soLuongGiam")long soLuongGiam);
+	@Query(value ="UPDATE SanPham SET soLuong = (soLuong - :soLuongGiam) WHERE idSanPham = :idSanPham")
+	Integer updateSoLuongByIdSanPham(@Param("idSanPham")long idSanPham, @Param("soLuongGiam")int soLuongGiam);
 
 	List<SanPham> findByTenSanPhamContainingIgnoreCase(String tenSanPham);
 

@@ -149,7 +149,9 @@ public class TransactionServiceImpl implements TransactionService {
 			DonHangOutput donHangOutput = new DonHangOutput();
 
 			//giảm sl nếu đã mua thành công
-			sanPhamRepository.updateSoLuongByIdSanPham(donHang.getIdSanPham(), donHang.getSoLuong());
+			long idSP = donHang.getIdSanPham();
+			int sl = donHang.getSoLuong();
+			sanPhamRepository.updateSoLuongByIdSanPham(idSP, sl);
 			donHangOutput.setTenSanPham(donHang.getTenSanPham());
 			donHangOutput.setSoLuong(donHang.getSoLuong());
 			if ((donHang.getNgayBatDau() != null && donHang.getNgayBatDau().compareTo(toDay) > 0) &&
