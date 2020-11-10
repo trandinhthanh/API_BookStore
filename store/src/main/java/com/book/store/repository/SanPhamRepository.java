@@ -26,10 +26,10 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
 	@Query(value ="SELECT p FROM SanPham p WHERE p.idDanhMucSP = :idDanhMucSP ")
 	List<SanPham> getSanPhamTheoDanhMuc(@Param("idDanhMucSP")int idDanhMucSP);
 	
-	@Query(value ="SELECT * FROM SanPham ORDER BY view DESC LIMIT 10" , nativeQuery = true)
+	@Query(value ="SELECT * FROM san_pham ORDER BY luot_xem DESC LIMIT 10" , nativeQuery = true)
 	List<SanPham> sanPhamNoiBat();
 	
-	@Query(value ="SELECT * FROM SanPham WHERE idDanhMucSP  = :idDanhMucSP ORDER BY view DESC LIMIT 10 ", nativeQuery = true)
+	@Query(value ="SELECT * FROM san_pham WHERE id_danh_mucsp  = :idDanhMucSP ORDER BY luot_xem DESC LIMIT 5 ", nativeQuery = true)
 	List<SanPham> sanPhamLienQuan(@Param("idDanhMucSP")int idDanhMucSP);
 	
 	@Query(value ="SELECT idSanPham, tenSanPham FROM SanPham")

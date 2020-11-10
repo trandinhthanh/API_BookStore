@@ -168,6 +168,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     private String formatMoney(double tien){
 		DecimalFormat formatter = new DecimalFormat("###,###,###");
-		return formatter.format(tien) +" đ";
+		return formatter.format(tien) +"đ";
 	}
 }
