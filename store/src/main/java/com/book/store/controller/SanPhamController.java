@@ -1,7 +1,6 @@
 package com.book.store.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.book.store.model.SanPham;
 import com.book.store.modelConvert.ListSanPhamOutput;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("sanPham")
@@ -80,13 +77,25 @@ public class SanPhamController {
 		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
 	}
 
+	@GetMapping("/getListSanPhamGiamGia")
+	public ResponseEntity<List<SanPhamOutput>> getSanPhamByID(){
+		List<SanPhamOutput> list = sanPhamService.getListSanPhamGiamGia();
+		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
+	}
+
 	@PostMapping(value="/create",headers="Accept=application/json")
-	 public ResponseEntity<Void> createSanPham(@RequestBody SanPham product, UriComponentsBuilder ucBuilder){
+	 public ResponseEntity<Void> createSanPham(@RequestBody SanPham product){
 		if(sanPhamService.createSanPham(product) == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
+
+	@GetMapping(value="/updateLuotXemByIdSanPham/{idSanPham}",headers="Accept=application/json")
+	public void update(@PathVariable("idSanPham") long idSanPham){
+		sanPhamService.updateLuotXemByIdSanPham(idSanPham);
+	}
+
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody SanPham sanPham){

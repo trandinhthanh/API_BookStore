@@ -7,9 +7,9 @@ import java.util.Optional;
 
 
 public interface SlideService {
-	public List<Slide> getAllSlide();
-	public Slide createSlide(Slide slide);
-	public Slide Update(Slide slide);
-	public void deleteSlideById(long id);
-	public Optional<Slide> findById(long id);
+	List<Slide> getAllSlide();
+	Slide createSlide(Slide slide);
+	Slide Update(Slide slide);
+	void deleteSlideById(long id);
+	Optional<Slide> findById(long id);
 }

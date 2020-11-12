@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface HinhAnhService {
 	
-	public boolean save(List<HinhAnh> dshinhAnh);
-	public Optional<HinhAnh> getFile(long id);
+	boolean save(List<HinhAnh> dshinhAnh);
+	Optional<HinhAnh> getFile(long id);
 }

@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface DanhMucSPService {
-	public List<DanhMucSanPham> getAllDanhMucSanPham();
-	public DanhMucSanPham createDanhMucSanPham(DanhMucSanPham danhMucSp);
-	public DanhMucSanPham update(DanhMucSanPham danhMucSp);
-	public void deleteDanhMucSanPhamById(long id);
-	public Optional<DanhMucSanPham> findById(long id);
-	public List<DanhMucSanPham> findDanhMucSanPham(@Param("id") long id);
+	List<DanhMucSanPham> getAllDanhMucSanPham();
+	DanhMucSanPham createDanhMucSanPham(DanhMucSanPham danhMucSp);
+	DanhMucSanPham update(DanhMucSanPham danhMucSp);
+	void deleteDanhMucSanPhamById(long id);
+	Optional<DanhMucSanPham> findById(long id);
+	List<DanhMucSanPham> findDanhMucSanPham(@Param("id") long id);
 }

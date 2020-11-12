@@ -154,6 +154,21 @@ public class SanPhamServiceImpl implements SanPhamService {
 		return outputs;
 	}
 
+	@Override
+	public List<SanPhamOutput> getListSanPhamGiamGia() {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		List<SanPham> listSanPham = sanPhamRepository.getListSanPhamGiamGia();
+		for (SanPham s: listSanPham) {
+			outputs.add(convertToSanPhamOutput(s));
+		}
+		return outputs;
+	}
+
+	@Override
+	public void updateLuotXemByIdSanPham(long idSanPham) {
+		sanPhamRepository.updateLuotXemByIdSanPham(idSanPham);
+	}
+
 	private SanPhamOutput convertToSanPhamOutput(SanPham sanPham){
 		List<String> links = new ArrayList<>();
 		SanPhamOutput sanPhamOutput = new SanPhamOutput();

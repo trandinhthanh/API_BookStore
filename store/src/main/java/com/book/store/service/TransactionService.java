@@ -8,10 +8,10 @@ import java.util.Optional;
 
 
 public interface TransactionService {
-	public List<GiaoDich> getAllTransaction();
-	public boolean createTransaction(GiaoDich giaoDich);
-	public GiaoDich Update(GiaoDich giaoDich);
-	public void deleteTransactionById(long id);
-	public Optional<GiaoDich> findById(long id);
-	public ChiTietDonHangOutput chiTietNguoiDung(long id);
+	List<GiaoDich> getAllTransaction();
+	boolean createTransaction(GiaoDich giaoDich);
+	GiaoDich Update(GiaoDich giaoDich);
+	void deleteTransactionById(long id);
+	Optional<GiaoDich> findById(long id);
+	ChiTietDonHangOutput chiTietNguoiDung(long id);
 }

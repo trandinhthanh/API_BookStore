@@ -7,9 +7,9 @@ import com.book.store.model.DonHang;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface DonHangService {
-	public List<DonHang> getAllDonHang();
-	public DonHang createDonHang(DonHang donHang);
-	public boolean updateDonHang(DonHang donHang);
-	public boolean deleteDonHang(DonHang donHang);
-	public List<DonHang> findByIdNguoiGiaoDich(long idNguoiGiaoDich);
+	List<DonHang> getAllDonHang();
+	DonHang createDonHang(DonHang donHang);
+	boolean updateDonHang(DonHang donHang);
+	boolean deleteDonHang(DonHang donHang);
+	List<DonHang> findByIdNguoiGiaoDich(long idNguoiGiaoDich);
 }
