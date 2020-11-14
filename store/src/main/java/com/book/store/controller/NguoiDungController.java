@@ -79,11 +79,11 @@ public class NguoiDungController {
 	}
 
 	@PostMapping(value="/dangNhap",headers="Accept=application/json")
-	public ResponseEntity<NguoiDung> dangNhap(@RequestBody NguoiDung nguoiDung ){
-		NguoiDung nd = nguoiDungService.kiemTraDangNhap(nguoiDung.getEmail(), nguoiDung.getMatKhau());
+	public ResponseEntity<NguoiDungOutput> dangNhap(@RequestBody NguoiDung nguoiDung ){
+		NguoiDungOutput nd = nguoiDungService.kiemTraDangNhap(nguoiDung.getEmail(), nguoiDung.getMatKhau());
 		if( nd != null){
-			return new ResponseEntity<NguoiDung>( nd ,HttpStatus.ACCEPTED);
+			return new ResponseEntity<>( nd ,HttpStatus.ACCEPTED);
 		}
-		return new ResponseEntity<NguoiDung>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

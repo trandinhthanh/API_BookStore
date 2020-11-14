@@ -62,11 +62,16 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	}
 
 	@Override
-	public NguoiDung kiemTraDangNhap(String email, String matKhau) {
+	public NguoiDungOutput kiemTraDangNhap(String email, String matKhau) {
 		NguoiDung nguoiDung = nguoiDungRepository.kiemTraDangNhap(email, matKhau);
 		if(nguoiDung != null){
-			nguoiDung.setMatKhau(null);
-			return nguoiDung;
+			NguoiDungOutput output = new NguoiDungOutput();
+			output.setIdNguoiDung(nguoiDung.getIdNguoiDung());
+			output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
+			output.setDiaChi(nguoiDung.getDiaChi());
+			output.setEmail(nguoiDung.getEmail());
+			output.setSoDienThoai(nguoiDung.getSoDienThoai());
+			return output;
 		}
 		return null;
 	}

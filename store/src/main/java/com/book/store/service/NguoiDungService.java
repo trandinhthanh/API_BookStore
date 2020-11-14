@@ -13,6 +13,6 @@ public interface NguoiDungService {
 	boolean update(NguoiDung nguoiDung);
 	boolean deleteNguoiDungById(long id);
 	NguoiDungOutput findById(long id);
-	NguoiDung kiemTraDangNhap(String email, String matKhau);
+	NguoiDungOutput kiemTraDangNhap(String email, String matKhau);
 	boolean editUserByUser(NguoiDungInput input);
 }
