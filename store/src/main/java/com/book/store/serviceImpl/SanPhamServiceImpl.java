@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.book.store.model.DanhMucSanPham;
 import com.book.store.model.GiamGia;
 import com.book.store.model.HinhAnh;
 import com.book.store.model.SanPham;
 import com.book.store.modelConvert.ListSanPhamOutput;
 import com.book.store.modelConvert.SanPhamOutput;
+import com.book.store.repository.DanhMucSPRepository;
 import com.book.store.repository.GiamGiaRepository;
 import com.book.store.repository.HinhAnhRepository;
 import com.book.store.repository.SanPhamRepository;
@@ -32,6 +34,9 @@ public class SanPhamServiceImpl implements SanPhamService {
 
 	@Autowired
 	private HinhAnhRepository hinhAnhRepository;
+
+	@Autowired
+	private DanhMucSPRepository danhMucSPRepository;
 	
 	@Override
 	public List<SanPhamOutput> getAllSanPham() {
@@ -174,6 +179,8 @@ public class SanPhamServiceImpl implements SanPhamService {
 		SanPhamOutput sanPhamOutput = new SanPhamOutput();
 		sanPhamOutput.setIdSanPham(sanPham.getIdSanPham());
 		sanPhamOutput.setIdDanhMucSP(sanPham.getIdDanhMucSP());
+		DanhMucSanPham danhMucSanPham = danhMucSPRepository.findId(sanPham.getIdDanhMucSP()).get(0);
+		sanPhamOutput.setTenDanhMucSP(danhMucSanPham.getTenDanhMuc());
 		sanPhamOutput.setTenSanPham(sanPham.getTenSanPham());
 		sanPhamOutput.setGia(sanPham.getGia());
 		sanPhamOutput.setMoTa(sanPham.getMoTa());

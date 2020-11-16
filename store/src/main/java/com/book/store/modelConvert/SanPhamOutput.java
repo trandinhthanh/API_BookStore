@@ -8,6 +8,8 @@ public class SanPhamOutput {
 
 	private int idDanhMucSP;
 
+	private String tenDanhMucSP;
+
 	private String tenSanPham;
 
 	private double gia;
@@ -54,6 +56,14 @@ public class SanPhamOutput {
 
 	public void setIdDanhMucSP(int idDanhMucSP) {
 		this.idDanhMucSP = idDanhMucSP;
+	}
+
+	public String getTenDanhMucSP() {
+		return tenDanhMucSP;
+	}
+
+	public void setTenDanhMucSP(String tenDanhMucSP) {
+		this.tenDanhMucSP = tenDanhMucSP;
 	}
 
 	public String getTenSanPham() {
