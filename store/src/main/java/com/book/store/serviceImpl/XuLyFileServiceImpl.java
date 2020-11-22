@@ -13,12 +13,14 @@ public class XuLyFileServiceImpl implements XuLyFileService {
     private static final String URL = System.getProperty("user.dir") + "\\src\\main\\resources\\image\\";
     @Override
     public byte[] getFile(String id) {
-        Path path = Paths.get(URL + id);
-        try {
-            byte[] fileImage = Files.readAllBytes(path);
-            return fileImage;
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(id != null) {
+            Path path = Paths.get(URL + id);
+            try {
+                byte[] fileImage = Files.readAllBytes(path);
+                return fileImage;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

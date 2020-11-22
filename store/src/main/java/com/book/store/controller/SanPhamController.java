@@ -84,11 +84,12 @@ public class SanPhamController {
 	}
 
 	@PostMapping(value="/create",headers="Accept=application/json")
-	 public ResponseEntity<Void> createSanPham(@RequestBody SanPham product){
-		if(sanPhamService.createSanPham(product) == null){
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+	 public ResponseEntity<SanPham> createSanPham(@RequestBody SanPham sanPham){
+		SanPham output = sanPhamService.createSanPham(sanPham);
+		if(output == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		return new ResponseEntity<>(output ,HttpStatus.CREATED);
 	}
 
 	@GetMapping(value="/updateLuotXemByIdSanPham/{idSanPham}",headers="Accept=application/json")
@@ -98,19 +99,20 @@ public class SanPhamController {
 
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
-	public ResponseEntity<Void> update(@RequestBody SanPham sanPham){
-		if(sanPhamService.update(sanPham) == null){
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<SanPham> update(@RequestBody SanPham sanPham){
+		SanPham output = sanPhamService.update(sanPham);
+		if( sanPham == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>( output,HttpStatus.OK);
     }
 	//delete
 	@GetMapping("/delete/{id}")
-	public ResponseEntity<SanPham> delete(@PathVariable("id") long id){
+	public ResponseEntity<Void> delete(@PathVariable("id") long id){
 		if(sanPhamService.deleteSanPhamById(id) == false){
-			return new ResponseEntity<SanPham>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<SanPham>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	

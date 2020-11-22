@@ -6,12 +6,10 @@ import java.util.*;
 
 import com.book.store.config.MailConfig;
 import com.book.store.config.SpringMailConfig;
+import com.book.store.model.DonHang;
 import com.book.store.model.GiaoDich;
 import com.book.store.model.NguoiDung;
-import com.book.store.modelConvert.ChiTietDonHang;
-import com.book.store.modelConvert.ChiTietDonHangOutput;
-import com.book.store.modelConvert.DonHangOutput;
-import com.book.store.modelConvert.SanPhamThanhTien;
+import com.book.store.modelConvert.*;
 import com.book.store.repository.DonHangRepository;
 import com.book.store.repository.SanPhamRepository;
 import com.book.store.repository.TransactionRepository;
@@ -37,24 +35,64 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	SanPhamRepository sanPhamRepository;
 
+
 	private MailConfig mailConfig = new MailConfig();
 
 	private SpringMailConfig springMailConfig = new SpringMailConfig();
 	
 	@Override
-	public List<GiaoDich> getAllTransaction() {
-		
-		return transactionRepository.findAll();
+	public List<ChiTietDonHangOutput> getAllTransaction() {
+		List<GiaoDich> giaoDichList = transactionRepository.findAll();
+		List<ChiTietDonHangOutput> outputList = new ArrayList<>();
+		for (GiaoDich gd : giaoDichList) {
+			ChiTietDonHangOutput output = new ChiTietDonHangOutput();
+			output.setIdGiaoDich(gd.getIdGiaoDich());
+			output.setTenNguoiDung(gd.getTenKhachHang());
+			output.setEmail(gd.getEmail());
+			output.setDiaChi(gd.getDiaChiGiaoHang());
+			output.setSoDienThoai(gd.getSoDienThoai());
+			output.setTongCong(gd.getSoTien());
+			output.setTrangThai(gd.getTrangThai());
+			output.setNgayMua(gd.getNgayTao());
+			List<SanPhamByDonHang> sanPhamByDonHangs = donHangRepository.findByIdGiaoDich(gd.getIdGiaoDich());
+			List<SanPhamThanhTien> sanPhamThanhTienList = new ArrayList<>();
+			for (SanPhamByDonHang sp:sanPhamByDonHangs) {
+				SanPhamThanhTien sanPhamThanhTien = new SanPhamThanhTien();
+				sanPhamThanhTien.setTenSanPham(sp.getTenSanPham());
+				sanPhamThanhTien.setSoLuong(sp.getSoLuong());
+				sanPhamThanhTien.setGia(sp.getTien());
+				sanPhamThanhTienList.add(sanPhamThanhTien);
+			}
+			output.setSanPhamThanhTiens(sanPhamThanhTienList);
+			outputList.add(output);
+		}
+		return outputList;
 	}
 
 	@Override
 	public boolean createTransaction(GiaoDich giaoDich) {
+		LocalDate toDay = LocalDate.now();
 		try {
 				giaoDich.setTrangThai("0");
 				giaoDich.setNgayTao(LocalDate.now());
 				GiaoDich giaoDichOutput = transactionRepository.save(giaoDich);
-				sendMailDonHang(giaoDichOutput);
-				donHangRepository.updateByIdNguoiGiaoDich(giaoDich.getIdKhachHang());
+//				sendMailDonHang(giaoDichOutput);
+			List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(giaoDich.getIdKhachHang());
+			for (ChiTietDonHang donHang: chiTietDonHang) {
+				double thanhTien = 0;
+				LocalDate ngayBatDau = donHang.getNgayBatDau();
+				LocalDate ngayKetThuc = donHang.getNgayKetThuc();
+				if ((ngayBatDau != null && ngayBatDau.compareTo(toDay) < 0) &&
+						(ngayKetThuc !=  null && ngayKetThuc.compareTo(toDay) > 0)
+						&&  donHang.getPhanTramGiam() != 0) {
+					double phatramGiam = 100 - donHang.getPhanTramGiam();
+					thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (phatramGiam / 100);
+				} else {
+					thanhTien = (donHang.getSoLuong() * donHang.getGia());
+				}
+				long idDonHang = donHang.getIdDonHang();
+				donHangRepository.updateByIdDoHang(idDonHang, giaoDichOutput.getIdGiaoDich(), thanhTien);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -63,27 +101,44 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public GiaoDich Update(GiaoDich giaoDich) {
-		
-		return transactionRepository.save(giaoDich);
+	public boolean updateTrangThai(long idGiaoDich, String trangThai) {
+		if(transactionRepository.updateByTrangThai(idGiaoDich, trangThai) > 0){
+			return true;
+		}
+		return false;
 	}
 
-	@Override
-	public void deleteTransactionById(long id) {
-		
-		transactionRepository.deleteById(id);
-	}
 
 	@Override
-	public Optional<GiaoDich> findById(long id) {
-		return transactionRepository.findById(id);
+	public ChiTietDonHangOutput findById(long id) {
+		ChiTietDonHangOutput output = new ChiTietDonHangOutput();
+		GiaoDich gd = transactionRepository.findById(id).get();
+		output.setIdGiaoDich(gd.getIdGiaoDich());
+		output.setTenNguoiDung(gd.getTenKhachHang());
+		output.setEmail(gd.getEmail());
+		output.setDiaChi(gd.getDiaChiGiaoHang());
+		output.setSoDienThoai(gd.getSoDienThoai());
+		output.setTongCong(gd.getSoTien());
+		output.setTrangThai(gd.getTrangThai());
+		output.setNgayMua(gd.getNgayTao());
+		output.setGhiChu(gd.getGhiChu());
+		List<SanPhamByDonHang> sanPhamByDonHangs = donHangRepository.findByIdGiaoDich(gd.getIdGiaoDich());
+		List<SanPhamThanhTien> sanPhamThanhTienList = new ArrayList<>();
+		for (SanPhamByDonHang sp:sanPhamByDonHangs) {
+			SanPhamThanhTien sanPhamThanhTien = new SanPhamThanhTien();
+			sanPhamThanhTien.setTenSanPham(sp.getTenSanPham());
+			sanPhamThanhTien.setSoLuong(sp.getSoLuong());
+			sanPhamThanhTien.setGia(sp.getTien());
+			sanPhamThanhTienList.add(sanPhamThanhTien);
+		}
+		output.setSanPhamThanhTiens(sanPhamThanhTienList);
+		return output;
 	}
 
 	@Override
 	public ChiTietDonHangOutput chiTietNguoiDung(long idNguoiGiaoDich) {
 		NguoiDung nguoiDung = transactionRepository.getChiTietKhachHangInterface(idNguoiGiaoDich);
 		List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(idNguoiGiaoDich);
-
 		ChiTietDonHangOutput output = new ChiTietDonHangOutput();
 		output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
 		output.setDiaChi(nguoiDung.getDiaChi());
@@ -92,21 +147,24 @@ public class TransactionServiceImpl implements TransactionService {
 
 		List<SanPhamThanhTien> sanPhamThanhTiens = new ArrayList<>();
 
-		double thanhTien = 0;
 		double tong = 0;
 		LocalDate toDay = LocalDate.now();
 		for (ChiTietDonHang donHang: chiTietDonHang) {
-
-			if ((donHang.getNgayBatDau() != null && donHang.getNgayBatDau().compareTo(toDay) > 0) &&
-					(donHang.getNgayKetThuc() !=  null && donHang.getNgayKetThuc().compareTo(toDay) <0)
+			double thanhTien = 0;
+			LocalDate ngayBatDau = donHang.getNgayBatDau();
+			LocalDate ngayKetThuc = donHang.getNgayKetThuc();
+			if ((ngayBatDau != null && ngayBatDau.compareTo(toDay) < 0) &&
+					(ngayKetThuc !=  null && ngayKetThuc.compareTo(toDay) > 0)
 					&&  donHang.getPhanTramGiam() != 0) {
-				thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (donHang.getPhanTramGiam() / 100);
+				double phatramGiam = 100 - donHang.getPhanTramGiam();
+				thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (phatramGiam / 100);
 			} else {
 				thanhTien = (donHang.getSoLuong() * donHang.getGia());
 			}
 			SanPhamThanhTien sanPhamThanhTien = new SanPhamThanhTien();
 			sanPhamThanhTien.setTenSanPham(donHang.getTenSanPham());
 			sanPhamThanhTien.setGia(thanhTien);
+			sanPhamThanhTien.setSoLuong(donHang.getSoLuong());
 			sanPhamThanhTiens.add(sanPhamThanhTien);
 
 			tong += thanhTien;
@@ -154,10 +212,11 @@ public class TransactionServiceImpl implements TransactionService {
 			sanPhamRepository.updateSoLuongByIdSanPham(idSP, sl);
 			donHangOutput.setTenSanPham(donHang.getTenSanPham());
 			donHangOutput.setSoLuong(donHang.getSoLuong());
-			if ((donHang.getNgayBatDau() != null && donHang.getNgayBatDau().compareTo(toDay) > 0) &&
-					(donHang.getNgayKetThuc() !=  null && donHang.getNgayKetThuc().compareTo(toDay) <0)
+			if ((donHang.getNgayBatDau() != null && donHang.getNgayBatDau().compareTo(toDay) < 0) &&
+					(donHang.getNgayKetThuc() !=  null && donHang.getNgayKetThuc().compareTo(toDay) > 0)
 					&&  donHang.getPhanTramGiam() != 0) {
-				thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (donHang.getPhanTramGiam() / 100);
+				double phatramGiam = 100 - donHang.getPhanTramGiam();
+				thanhTien = (donHang.getSoLuong() * donHang.getGia()) * (phatramGiam / 100);
 				donHangOutput.setThanhTien(formatMoney(thanhTien));
 			} else {
 				thanhTien = (donHang.getSoLuong() * donHang.getGia());

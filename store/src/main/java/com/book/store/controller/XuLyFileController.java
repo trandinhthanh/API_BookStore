@@ -23,9 +23,10 @@ public class XuLyFileController {
         byte[] image = xuLyFileService.getFile(id);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        headers.setContentLength(image.length);
-
+        if(image != null) {
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.setContentLength(image.length);
+        }
         return new HttpEntity<byte[]>(image, headers);
     }
 

@@ -26,7 +26,10 @@ public class SanPham implements Serializable {
 	
 	@Column(name="tenSanPham")
 	private String tenSanPham;
-	
+
+	@Column(name="giaGoc")
+	private double giaGoc;
+
 	@Column(name="gia")
 	private double gia;
 	
@@ -92,6 +95,14 @@ public class SanPham implements Serializable {
 
 	public void setTenSanPham(String tenSanPham) {
 		this.tenSanPham = tenSanPham;
+	}
+
+	public double getGiaGoc() {
+		return giaGoc;
+	}
+
+	public void setGiaGoc(double giaGoc) {
+		this.giaGoc = giaGoc;
 	}
 
 	public double getGia() {

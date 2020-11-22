@@ -1,27 +1,32 @@
 package com.book.store.modelConvert;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
-import java.util.List;
 
+public class NguoiDungConvert {
 
-public class ChiTietDonHangOutput {
-    private long idGiaoDich;
+    private long idNguoiDung;
+    
     private String tenNguoiDung;
+    
     private String email;
+    
     private String soDienThoai;
+    
     private String diaChi;
-    private List<SanPhamThanhTien> sanPhamThanhTiens;
-    private double tongCong;
-    private LocalDate ngayMua;
-    private String ghiChu;
+    
+    private boolean laQuanLy;
+    
+    private LocalDate ngayTao;
+    
     private String trangThai;
 
-    public long getIdGiaoDich() {
-        return idGiaoDich;
+    public long getIdNguoiDung() {
+        return idNguoiDung;
     }
 
-    public void setIdGiaoDich(long idGiaoDich) {
-        this.idGiaoDich = idGiaoDich;
+    public void setIdNguoiDung(long idNguoiDung) {
+        this.idNguoiDung = idNguoiDung;
     }
 
     public String getTenNguoiDung() {
@@ -56,36 +61,20 @@ public class ChiTietDonHangOutput {
         this.diaChi = diaChi;
     }
 
-    public double getTongCong() {
-        return tongCong;
+    public boolean isLaQuanLy() {
+        return laQuanLy;
     }
 
-    public void setTongCong(double tongCong) {
-        this.tongCong = tongCong;
+    public void setLaQuanLy(boolean laQuanLy) {
+        this.laQuanLy = laQuanLy;
     }
 
-    public List<SanPhamThanhTien> getSanPhamThanhTiens() {
-        return sanPhamThanhTiens;
+    public LocalDate getNgayTao() {
+        return ngayTao;
     }
 
-    public void setSanPhamThanhTiens(List<SanPhamThanhTien> sanPhamThanhTiens) {
-        this.sanPhamThanhTiens = sanPhamThanhTiens;
-    }
-
-    public LocalDate getNgayMua() {
-        return ngayMua;
-    }
-
-    public void setNgayMua(LocalDate ngayMua) {
-        this.ngayMua = ngayMua;
-    }
-
-    public String getGhiChu() {
-        return ghiChu;
-    }
-
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
+    public void setNgayTao(LocalDate ngayTao) {
+        this.ngayTao = ngayTao;
     }
 
     public String getTrangThai() {

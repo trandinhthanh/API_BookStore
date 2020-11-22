@@ -28,14 +28,14 @@ public class TransactionController {
 	private TransactionService transactionService;
 	
 	@GetMapping("/listTransaction")
-	public ResponseEntity<List<GiaoDich>>  getAllTransaction(){
-		List<GiaoDich> list = transactionService.getAllTransaction();
-		return new ResponseEntity<List<GiaoDich>>(list, HttpStatus.OK);
+	public ResponseEntity<List<ChiTietDonHangOutput>>  getAllTransaction(){
+		List<ChiTietDonHangOutput> list = transactionService.getAllTransaction();
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
 	@GetMapping("/listTransaction/{id}")
-	public Optional<GiaoDich> getNewByID(@PathVariable("id") long id){
-		return transactionService.findById(id);
+	public ResponseEntity<ChiTietDonHangOutput> getNewByID(@PathVariable("id") long id){
+		return new ResponseEntity<>(transactionService.findById(id), HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
@@ -45,28 +45,14 @@ public class TransactionController {
 		}
 	    return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	//Sua
-	@PostMapping(value="/update",headers="Accept=application/json")
-	public ResponseEntity<Void> update(@RequestBody GiaoDich giaoDich){
-		Optional<GiaoDich> listTransaction = transactionService.findById(giaoDich.getIdGiaoDich());
-		if (!listTransaction.isPresent()) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+
+
+	@GetMapping("/updateTrangThai/{idGiaoDich}/{trangThai}")
+	public ResponseEntity<GiaoDich> delete(@PathVariable("idGiaoDich") long idGiaoDich, @PathVariable("trangThai") String trangThai){
+		if (transactionService.updateTrangThai(idGiaoDich, trangThai)) {
+			return new ResponseEntity<GiaoDich>(HttpStatus.OK);
 		}
-		else {
-			transactionService.Update(giaoDich);
-		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-	//delete
-	@GetMapping("/delete/{id}")
-	public ResponseEntity<GiaoDich> delete(@PathVariable("id") long id){
-		Optional<GiaoDich> listTransaction = transactionService.findById(id);
-		if (!listTransaction.isPresent()) {
-			return new ResponseEntity<GiaoDich>(HttpStatus.NOT_FOUND);
-		}
-		else 
-			transactionService.deleteTransactionById(id);
-		return new ResponseEntity<GiaoDich>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<GiaoDich>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping("/getChiTiet/{idNguoiGiaoDich}")

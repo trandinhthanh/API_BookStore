@@ -12,6 +12,8 @@ public class NguoiDungOutput {
 
     private String diaChi;
 
+    private String trangThai;
+
     public long getIdNguoiDung() {
         return idNguoiDung;
     }
@@ -50,5 +52,13 @@ public class NguoiDungOutput {
 
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 }

@@ -56,6 +56,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 				return null;
 			}
 		}
+		product.setNgayTao(LocalDate.now());
 		return sanPhamRepository.save(product);
 	}
 
@@ -65,6 +66,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 		if (!listSanPham.isPresent()) {
 			return null;
 		}
+		product.setNgayThayDoi(LocalDate.now());
 		return sanPhamRepository.save(product);
 	}
 
@@ -179,9 +181,11 @@ public class SanPhamServiceImpl implements SanPhamService {
 		SanPhamOutput sanPhamOutput = new SanPhamOutput();
 		sanPhamOutput.setIdSanPham(sanPham.getIdSanPham());
 		sanPhamOutput.setIdDanhMucSP(sanPham.getIdDanhMucSP());
+		sanPhamOutput.setIdGiamGia(sanPham.getIdGiamGia());
 		DanhMucSanPham danhMucSanPham = danhMucSPRepository.findId(sanPham.getIdDanhMucSP()).get(0);
 		sanPhamOutput.setTenDanhMucSP(danhMucSanPham.getTenDanhMuc());
 		sanPhamOutput.setTenSanPham(sanPham.getTenSanPham());
+		sanPhamOutput.setGiaGoc(sanPham.getGiaGoc());
 		sanPhamOutput.setGia(sanPham.getGia());
 		sanPhamOutput.setMoTa(sanPham.getMoTa());
 		sanPhamOutput.setTacGia(sanPham.getTacGia());

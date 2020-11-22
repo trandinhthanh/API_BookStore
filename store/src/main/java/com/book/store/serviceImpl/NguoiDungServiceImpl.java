@@ -1,13 +1,16 @@
 package com.book.store.serviceImpl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.book.store.model.NguoiDung;
+import com.book.store.modelConvert.NguoiDungConvert;
 import com.book.store.modelConvert.NguoiDungInput;
 import com.book.store.modelConvert.NguoiDungOutput;
 import com.book.store.repository.NguoiDungRepository;
+import com.book.store.repository.TransactionRepository;
 import com.book.store.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +25,21 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
 	@Autowired
 	private NguoiDungRepository nguoiDungRepository;
+
+	@Autowired
+	private TransactionRepository transactionRepository;
 	
 	@Override
-	public NguoiDung createNguoiDung(NguoiDung nguoiDung) {
+	public boolean createNguoiDung(NguoiDung nguoiDung) {
 		nguoiDung.setNgayTao(LocalDate.now());
-		return nguoiDungRepository.save(nguoiDung);
+		List<NguoiDung> listNguoiDung = nguoiDungRepository.findAll();
+		for( NguoiDung nd : listNguoiDung){
+			if(nguoiDung.getEmail().equals(nd.getEmail())) {
+				return false;
+			}
+		}
+		nguoiDungRepository.save(nguoiDung);
+		return true;
 	}
 
 	@Override
@@ -58,13 +71,29 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 		output.setDiaChi(nguoiDung.getDiaChi());
 		output.setEmail(nguoiDung.getEmail());
 		output.setSoDienThoai(nguoiDung.getSoDienThoai());
+		output.setTrangThai(nguoiDung.getTrangThai());
 		return output;
 	}
 
 	@Override
 	public NguoiDungOutput kiemTraDangNhap(String email, String matKhau) {
 		NguoiDung nguoiDung = nguoiDungRepository.kiemTraDangNhap(email, matKhau);
-		if(nguoiDung != null){
+		if(nguoiDung != null && !nguoiDung.isLaQuanLy()){
+			NguoiDungOutput output = new NguoiDungOutput();
+			output.setIdNguoiDung(nguoiDung.getIdNguoiDung());
+			output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
+			output.setDiaChi(nguoiDung.getDiaChi());
+			output.setEmail(nguoiDung.getEmail());
+			output.setSoDienThoai(nguoiDung.getSoDienThoai());
+			return output;
+		}
+		return null;
+	}
+
+	@Override
+	public NguoiDungOutput kiemTraDangNhapAdmin(String email, String matKhau) {
+		NguoiDung nguoiDung = nguoiDungRepository.kiemTraDangNhap(email, matKhau);
+		if(nguoiDung != null && nguoiDung.isLaQuanLy()){
 			NguoiDungOutput output = new NguoiDungOutput();
 			output.setIdNguoiDung(nguoiDung.getIdNguoiDung());
 			output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
@@ -96,8 +125,48 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	}
 
 	@Override
-	public List<NguoiDung> getAllNguoiDung() {
-		return nguoiDungRepository.findAll();
+	public boolean blockUser(long idNguoiDung) {
+		if(nguoiDungRepository.blockUser(idNguoiDung) > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<NguoiDungConvert> getAllNguoiDung() {
+		List<NguoiDungConvert> outputList = new ArrayList<>();
+		List<NguoiDung> nguoiDungList = nguoiDungRepository.findAll();
+		for (NguoiDung nguoiDung: nguoiDungList) {
+			NguoiDungConvert output = new NguoiDungConvert();
+			output.setIdNguoiDung(nguoiDung.getIdNguoiDung());
+			output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
+			output.setDiaChi(nguoiDung.getDiaChi());
+			output.setEmail(nguoiDung.getEmail());
+			output.setSoDienThoai(nguoiDung.getSoDienThoai());
+			output.setLaQuanLy(nguoiDung.isLaQuanLy());
+			output.setNgayTao(nguoiDung.getNgayTao());
+			if(!nguoiDung.isLaQuanLy()){
+				Integer soGiaoDichCancel = transactionRepository.getGiaoDichCancel(nguoiDung.getIdNguoiDung());
+				if(nguoiDung.getTrangThai().equals("1")) {
+					if (soGiaoDichCancel == null) {
+						output.setTrangThai("Đang hoạt động");
+					} else {
+						output.setTrangThai("Không nhận - " + soGiaoDichCancel);
+					}
+				}else {
+					output.setTrangThai("Đã khóa");
+				}
+			}else {
+				if(nguoiDung.getTrangThai().equals("1")) {
+					output.setTrangThai("Đang hoạt động");
+				}
+				else {
+					output.setTrangThai("Đã khóa");
+				}
+			}
+			outputList.add(output);
+		}
+		return outputList;
 	}
 
 }

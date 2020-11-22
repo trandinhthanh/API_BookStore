@@ -8,10 +8,9 @@ import java.util.Optional;
 
 
 public interface TransactionService {
-	List<GiaoDich> getAllTransaction();
+	List<ChiTietDonHangOutput> getAllTransaction();
 	boolean createTransaction(GiaoDich giaoDich);
-	GiaoDich Update(GiaoDich giaoDich);
-	void deleteTransactionById(long id);
-	Optional<GiaoDich> findById(long id);
+	boolean updateTrangThai(long idGiaoDich,String trangThai);
+	ChiTietDonHangOutput findById(long id);
 	ChiTietDonHangOutput chiTietNguoiDung(long id);
 }

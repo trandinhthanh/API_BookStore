@@ -21,8 +21,8 @@ public class DonHang {
 	@Column(name="idNguoiGiaoDich")
 	private long idNguoiGiaoDich;
 
-	@Column(name="laNguoiDung")
-	private boolean laNguoiDung;
+	@Column(name="idGiaoDich")
+	private long idGiaoDich;
 	
 	@Column(name="idSanPham")
 	private long idSanPham;
@@ -35,9 +35,6 @@ public class DonHang {
 
 	@Column(name="ngayTao")
 	private LocalDate ngayTao;
-
-	@Column(name="nguoiTao")
-	private String nguoiTao;
 	
 	@Column(name="trangThai")
 	private String trangThai;
@@ -58,12 +55,12 @@ public class DonHang {
 		this.idNguoiGiaoDich = idNguoiGiaoDich;
 	}
 
-	public boolean isLaNguoiDung() {
-		return laNguoiDung;
+	public long getIdGiaoDich() {
+		return idGiaoDich;
 	}
 
-	public void setLaNguoiDung(boolean laNguoiDung) {
-		this.laNguoiDung = laNguoiDung;
+	public void setIdGiaoDich(long idGiaoDich) {
+		this.idGiaoDich = idGiaoDich;
 	}
 
 	public long getIdSanPham() {
@@ -96,14 +93,6 @@ public class DonHang {
 
 	public void setNgayTao(LocalDate ngayTao) {
 		this.ngayTao = ngayTao;
-	}
-
-	public String getNguoiTao() {
-		return nguoiTao;
-	}
-
-	public void setNguoiTao(String nguoiTao) {
-		this.nguoiTao = nguoiTao;
 	}
 
 	public String getTrangThai() {

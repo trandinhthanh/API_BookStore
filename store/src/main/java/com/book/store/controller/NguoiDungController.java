@@ -3,6 +3,7 @@ package com.book.store.controller;
 import java.util.List;
 
 import com.book.store.model.NguoiDung;
+import com.book.store.modelConvert.NguoiDungConvert;
 import com.book.store.modelConvert.NguoiDungInput;
 import com.book.store.modelConvert.NguoiDungOutput;
 import com.book.store.service.NguoiDungService;
@@ -26,9 +27,9 @@ public class NguoiDungController {
 	private NguoiDungService nguoiDungService;
 	
 	@GetMapping("/listNguoiDung")
-	public ResponseEntity<List<NguoiDung>>  getAllNguoiDung(){
-		List<NguoiDung> list = nguoiDungService.getAllNguoiDung();
-		return new ResponseEntity<List<NguoiDung>>(list, HttpStatus.OK);
+	public ResponseEntity<List<NguoiDungConvert>>  getAllNguoiDung(){
+		List<NguoiDungConvert> list = nguoiDungService.getAllNguoiDung();
+		return new ResponseEntity<List<NguoiDungConvert>>(list, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getNguoiDung/{id}")
@@ -40,14 +41,10 @@ public class NguoiDungController {
 	@PostMapping(value="/create",headers="Accept=application/json")
 	 public ResponseEntity<Boolean> createNguoiDung(@RequestBody NguoiDung nguoiDung ){
 //		nguoiDung.setMatKhau(Base64.getEncoder().encodeToString(nguoiDung.getMatKhau().getBytes()));
-		List<NguoiDung> listNguoiDung = nguoiDungService.getAllNguoiDung();
-		for( NguoiDung nd : listNguoiDung){
-			if(nguoiDung.getEmail().equals(nd.getEmail())) {
-				return new ResponseEntity<Boolean>(false ,HttpStatus.NOT_FOUND);
-			}
+		if(nguoiDungService.createNguoiDung(nguoiDung)) {
+			return new ResponseEntity<Boolean>(true ,HttpStatus.CREATED);
 		}
-		nguoiDungService.createNguoiDung(nguoiDung);
-		return new ResponseEntity<Boolean>(true ,HttpStatus.CREATED);
+		return new ResponseEntity<Boolean>(false ,HttpStatus.NOT_FOUND);
 	}
 	
 	//Sua
@@ -85,5 +82,22 @@ public class NguoiDungController {
 			return new ResponseEntity<>( nd ,HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@PostMapping(value="/dangNhapAdmin",headers="Accept=application/json")
+	public ResponseEntity<NguoiDungOutput> dangNhapAdmin(@RequestBody NguoiDung nguoiDung ){
+		NguoiDungOutput nd = nguoiDungService.kiemTraDangNhapAdmin(nguoiDung.getEmail(), nguoiDung.getMatKhau());
+		if( nd != null){
+			return new ResponseEntity<>( nd ,HttpStatus.ACCEPTED);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("/blockUser/{idNguoiDung}")
+	public ResponseEntity<Boolean> blockUser(@PathVariable("idNguoiDung") long idNguoiDung){
+		if(nguoiDungService.blockUser(idNguoiDung)) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

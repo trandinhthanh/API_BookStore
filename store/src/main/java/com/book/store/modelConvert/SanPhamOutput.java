@@ -8,9 +8,13 @@ public class SanPhamOutput {
 
 	private int idDanhMucSP;
 
+	private int idGiamGia;
+
 	private String tenDanhMucSP;
 
 	private String tenSanPham;
+
+	private double giaGoc;
 
 	private double gia;
 
@@ -58,6 +62,14 @@ public class SanPhamOutput {
 		this.idDanhMucSP = idDanhMucSP;
 	}
 
+	public int getIdGiamGia() {
+		return idGiamGia;
+	}
+
+	public void setIdGiamGia(int idGiamGia) {
+		this.idGiamGia = idGiamGia;
+	}
+
 	public String getTenDanhMucSP() {
 		return tenDanhMucSP;
 	}
@@ -72,6 +84,14 @@ public class SanPhamOutput {
 
 	public void setTenSanPham(String tenSanPham) {
 		this.tenSanPham = tenSanPham;
+	}
+
+	public double getGiaGoc() {
+		return giaGoc;
+	}
+
+	public void setGiaGoc(double giaGoc) {
+		this.giaGoc = giaGoc;
 	}
 
 	public double getGia() {

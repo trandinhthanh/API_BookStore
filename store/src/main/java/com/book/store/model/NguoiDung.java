@@ -40,6 +40,9 @@ public class NguoiDung {
 	@Column(name="ngayTao")
 	private LocalDate ngayTao;
 
+	@Column(name="trangThai")
+	private String trangThai;
+
 	public long getIdNguoiDung() {
 		return idNguoiDung;
 	}
@@ -102,5 +105,13 @@ public class NguoiDung {
 
 	public void setNgayTao(LocalDate ngayTao) {
 		this.ngayTao = ngayTao;
+	}
+
+	public String getTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(String trangThai) {
+		this.trangThai = trangThai;
 	}
 }
