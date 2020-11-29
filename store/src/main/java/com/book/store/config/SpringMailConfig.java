@@ -35,10 +35,10 @@ public class SpringMailConfig implements ApplicationContextAware, EnvironmentAwa
         return templateEngine;
     }
 
-
+//cau hinh va doc file html
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setOrder(Integer.valueOf(2));
+        templateResolver.setOrder(Integer.valueOf(1));
         templateResolver.setPrefix("/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);

@@ -71,17 +71,11 @@ public class SanPhamServiceImpl implements SanPhamService {
 	}
 
 	@Override
-	public boolean deleteSanPhamById(long id) {
-		Optional<SanPham> listSanPham = sanPhamRepository.findById(id);
-		if (!listSanPham.isPresent()) {
-			return false;
+	public boolean updateTrangThai(long idSanPham, String trangThai) {
+		if (sanPhamRepository.updateTrangThaiByIdSanPham(idSanPham, trangThai) > 0) {
+			return true;
 		}
-		try {
-			sanPhamRepository.deleteById(id);
-		}catch (Exception e){
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -140,7 +134,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Override
 	public ListSanPhamOutput getSanPhamTheoPage(String linkDanhMuc, int numberPage){
 		ListSanPhamOutput listSanPhamOutput = new ListSanPhamOutput();
-		int pageSize = 12;
+		int pageSize = 2;
 		List<SanPhamOutput> outputs = new ArrayList<>();
 		Page<SanPham> pageSanPham = sanPhamRepository.findByIdDanhMucSP( linkDanhMuc, PageRequest.of(numberPage - 1, pageSize));
 		for (SanPham s: pageSanPham.getContent()) {
@@ -197,8 +191,9 @@ public class SanPhamServiceImpl implements SanPhamService {
 			}
 		}
 		List<HinhAnh> listHinhAnh = hinhAnhRepository.getHinhAnhByIdSanPham(sanPham.getIdSanPham());
-		for (HinhAnh hinhAnh: listHinhAnh) {
-			if(hinhAnh.getSapXep() == 1){
+		for (int i = 0; i < listHinhAnh.size(); i++) {
+			HinhAnh hinhAnh = listHinhAnh.get(i);
+			if(i == 0){
 				sanPhamOutput.setLinkHinhChinh(hinhAnh.getLink());
 				links.add(hinhAnh.getLink());
 			}else {

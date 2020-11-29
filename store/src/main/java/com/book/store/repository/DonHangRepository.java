@@ -33,5 +33,6 @@ public interface DonHangRepository extends JpaRepository<DonHang, Long>{
     @Query(value ="select sp.tenSanPham as tenSanPham, dh.soLuong as soLuong, dh.tien as tien from DonHang dh , SanPham sp where dh.idSanPham = sp.idSanPham and dh.idGiaoDich = :idGiaoDich")
     List<SanPhamByDonHang> findByIdGiaoDich(@Param("idGiaoDich")long idGiaoDich);
 
+    @Query(value ="select dh from DonHang dh where dh.trangThai ='0' and dh.idNguoiGiaoDich = :idNguoiGiaoDich")
     List<DonHang> findByIdNguoiGiaoDich(long idNguoiGiaoDich);
 }

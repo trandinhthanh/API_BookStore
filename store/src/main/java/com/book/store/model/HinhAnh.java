@@ -10,15 +10,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "HinhAnh")
 public class HinhAnh {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	@Column(name="idHinhAnh")
 	private long idHinhAnh;
-	
-	@Column(name="tenHinh")
-    private String tenHinh;
 
 	@Column(name="link")
     private String link;
@@ -35,14 +32,6 @@ public class HinhAnh {
 
 	public void setIdHinhAnh(long idHinhAnh) {
 		this.idHinhAnh = idHinhAnh;
-	}
-
-	public String getTenHinh() {
-		return tenHinh;
-	}
-
-	public void setTenHinh(String tenHinh) {
-		this.tenHinh = tenHinh;
 	}
 
 	public String getLink() {

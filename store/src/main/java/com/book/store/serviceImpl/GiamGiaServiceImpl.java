@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -22,25 +24,40 @@ public class GiamGiaServiceImpl implements GiamGiaService {
 
     @Override
     public List<GiamGia> getAllGiamGia() {
-        return giamGiaRepository.findAll();
+        List<GiamGia> output = new ArrayList<>();
+        for (GiamGia giamGia: giamGiaRepository.findAll()){
+            giamGia.setTrangThai(kiemTraTrangThai(giamGia));
+            output.add(giamGia);
+        }
+        return output;
     }
 
     @Override
     public GiamGia getGiamGiaById(long idGiamGia) {
-        return giamGiaRepository.findById(idGiamGia).get();
+        GiamGia giamGia = giamGiaRepository.findById(idGiamGia).get();
+        giamGia.setTrangThai(kiemTraTrangThai(giamGia));
+        return giamGia;
     }
 
     @Override
     public GiamGia create(GiamGia giamGia) {
-        if(giamGiaRepository.findById(giamGia.getIdGiamGia()) == null){
-            return giamGiaRepository.save(giamGia);
+        List<GiamGia> listGiamGias = giamGiaRepository.findAll();
+        for( GiamGia g : listGiamGias) {
+            if(g.getTenGiamGia().equals(giamGia.getTenGiamGia())) {
+                return null;
+            }
         }
-        return null;
+        giamGia.setNgayTao(LocalDate.now());
+        return giamGiaRepository.save(giamGia);
     }
 
     @Override
     public GiamGia update(GiamGia giamGia) {
-        if(giamGiaRepository.findById(giamGia.getIdGiamGia()) != null){
+        GiamGia getGiamGia = giamGiaRepository.findById(giamGia.getIdGiamGia()).get();
+        if( getGiamGia != null){
+            giamGia.setNguoiTao(getGiamGia.getNguoiTao());
+            giamGia.setNgayTao(getGiamGia.getNgayTao());
+            giamGia.setNgayThayDoi(LocalDate.now());
             return giamGiaRepository.save(giamGia);
         }
         return null;
@@ -53,5 +70,12 @@ public class GiamGiaServiceImpl implements GiamGiaService {
         }
         giamGiaRepository.deleteById(idGiamGia);
         return true;
+    }
+
+    private String kiemTraTrangThai(GiamGia giamGia){
+        if(giamGia.getNgayBatDau().isEqual(LocalDate.now()) || giamGia.getNgayKetThuc().isEqual(LocalDate.now()) || giamGia.getNgayBatDau().isBefore(LocalDate.now()) && (giamGia.getNgayKetThuc().isAfter(LocalDate.now()))){
+            return "Đang hoạt động";
+        }
+        return "Kết thúc";
     }
 }

@@ -13,8 +13,6 @@ import com.book.store.repository.NguoiDungRepository;
 import com.book.store.repository.TransactionRepository;
 import com.book.store.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

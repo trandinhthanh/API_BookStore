@@ -10,7 +10,7 @@ public interface SanPhamService {
 	List<SanPhamOutput> getAllSanPham();
 	SanPham createSanPham(SanPham sanPham);
 	SanPham update(SanPham sanPham);
-	boolean deleteSanPhamById(long id);
+	boolean updateTrangThai(long idSanPham, String trangThai);
 	SanPhamOutput findById(long id);
 	List<SanPhamOutput> getSanPhamTheoDanhMuc(int danhMucSp );
 	List<SanPhamOutput> sanPhamNoiBat();

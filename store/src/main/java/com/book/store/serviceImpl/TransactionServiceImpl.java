@@ -76,7 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
 				giaoDich.setTrangThai("0");
 				giaoDich.setNgayTao(LocalDate.now());
 				GiaoDich giaoDichOutput = transactionRepository.save(giaoDich);
-//				sendMailDonHang(giaoDichOutput);
+				sendMailDonHang(giaoDichOutput);
 			List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(giaoDich.getIdKhachHang());
 			for (ChiTietDonHang donHang: chiTietDonHang) {
 				double thanhTien = 0;
@@ -191,6 +191,7 @@ public class TransactionServiceImpl implements TransactionService {
         message.setTo(giaoDich.getEmail());
 
         // Create the HTML body using Thymeleaf
+		// doc html va do du lieu
         final String htmlContent = this.springMailConfig.emailTemplateEngine().process("sendEmailOrder", ctx);
         message.setText(htmlContent, true); // true = isHtml
 

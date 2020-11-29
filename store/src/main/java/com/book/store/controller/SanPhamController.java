@@ -106,13 +106,13 @@ public class SanPhamController {
 		}
 		return new ResponseEntity<>( output,HttpStatus.OK);
     }
-	//delete
-	@GetMapping("/delete/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("id") long id){
-		if(sanPhamService.deleteSanPhamById(id) == false){
+	//cập nhật trang Thai sản phẩm
+	@GetMapping("/updateTrangThai/{idSanPham}/{trangThai}")
+	public ResponseEntity<Void> updateTrangThai(@PathVariable("idSanPham") long idSanPham, @PathVariable("trangThai") String trangThai){
+		if(sanPhamService.updateTrangThai(idSanPham, trangThai) == false){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	

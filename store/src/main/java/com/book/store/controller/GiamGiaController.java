@@ -51,7 +51,7 @@ public class GiamGiaController {
 
     }
     //delete
-    @PostMapping(value="/delete/{idGiamGia}",headers="Accept=application/json")
+    @GetMapping(value="/delete/{idGiamGia}",headers="Accept=application/json")
     public ResponseEntity<Void> delete(@PathVariable("idGiamGia") long idGiamGia){
         if (giamGiaService.delete(idGiamGia)) {
             return new ResponseEntity<>(HttpStatus.OK);

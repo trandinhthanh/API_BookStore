@@ -3,6 +3,7 @@ package com.book.store.repository;
 import com.book.store.model.GiaoDich;
 import com.book.store.model.NguoiDung;
 import com.book.store.modelConvert.ChiTietDonHang;
+import com.book.store.modelConvert.DoanhThuSanPham;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -60,5 +61,25 @@ public interface TransactionRepository extends JpaRepository<GiaoDich, Long>{
             "where gd.trang_thai = '2'\n" +
             "and gd.ngay_tao between :fromDate and :toDate", nativeQuery = true)
     Double sumTienThuVeByDate(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
+
+    @Query(value = "select sp.ten_san_pham as tenSanPham , \n" +
+            "(select dmsp .ten_danh_muc from danh_muc_san_pham dmsp where dmsp.id_danh_mucsp = sp.id_danh_mucsp ) as loai, \n" +
+            "dh.so_luong as soLuong , gia_goc * dh.so_luong  as tienVon, \n" +
+            "dh.tien - (gia_goc * dh.so_luong) as tienLoi, dh.tien as tienThuVe \n" +
+            "from san_pham sp left join don_hang dh on dh.id_san_pham = sp.id_san_pham \n" +
+            "left join giao_dich gd on gd.id_giao_dich = dh.id_giao_dich\n" +
+            "where gd.trang_thai = 2", nativeQuery = true)
+    List<DoanhThuSanPham> getDoanhThuSP();
+
+    @Query(value = "select sp.ten_san_pham as tenSanPham , \n" +
+            "(select dmsp .ten_danh_muc from danh_muc_san_pham dmsp where dmsp.id_danh_mucsp = sp.id_danh_mucsp ) as loai, \n" +
+            "dh.so_luong as soLuong , gia_goc * dh.so_luong  as tienVon, \n" +
+            "dh.tien - (gia_goc * dh.so_luong) as tienLoi, dh.tien as tienThuVe \n" +
+            "from san_pham sp left join don_hang dh on dh.id_san_pham = sp.id_san_pham \n" +
+            "left join giao_dich gd on gd.id_giao_dich = dh.id_giao_dich\n" +
+            "where gd.trang_thai = 2 and gd.ngay_tao between :fromDate and :toDate", nativeQuery = true)
+    List<DoanhThuSanPham> getDoanhThuSPByDate(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
+
+
 
 }
