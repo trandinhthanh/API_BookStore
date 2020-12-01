@@ -29,6 +29,10 @@ public class DanhMucSPController {
 		return new ResponseEntity<List<DanhMucSanPham>>(list, HttpStatus.OK);
 	}
 
+	@GetMapping("/getDanhMucById/{idDanhMucSP}")
+	public ResponseEntity<DanhMucSanPham>  getDanhMucById(@PathVariable("idDanhMucSP") long idDanhMucSP){
+		return new ResponseEntity<DanhMucSanPham>(danhMucSPService.findDanhMucSanPham(idDanhMucSP), HttpStatus.OK);
+	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
 	 public ResponseEntity<Void> createDanhMucSanPham(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
@@ -45,24 +49,17 @@ public class DanhMucSPController {
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
 	public ResponseEntity<Void> update(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
-		List<DanhMucSanPham> listDanhMucSanPham = danhMucSPService.findDanhMucSanPham(danhMucSP.getIdDanhMucSP());
-		if (listDanhMucSanPham.size()<=0) {
+		if (danhMucSPService.update(danhMucSP) == null) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
-		else {
-			danhMucSPService.update(danhMucSP);
 		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
     }
-	//delete
-	@GetMapping("/delete/{id}")
-	public ResponseEntity<DanhMucSanPham> delete(@PathVariable("id") long id){
-		List<DanhMucSanPham> listDanhMucSanPham = danhMucSPService.findDanhMucSanPham(id);
-		if (listDanhMucSanPham.size()<=0) {
-			return new ResponseEntity<DanhMucSanPham>(HttpStatus.NOT_FOUND);
+
+	@GetMapping("/updateTrangThai/{idDanhMucSP}/{trangThai}")
+	public ResponseEntity<Void> updateTrangThaiById(@PathVariable("idDanhMucSP") long idDanhMucSP,@PathVariable("trangThai") String trangThai){
+		if (danhMucSPService.updateTrangThaiById(idDanhMucSP, trangThai)) {
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
-		else
-			danhMucSPService.deleteDanhMucSanPhamById(id);
-		return new ResponseEntity<DanhMucSanPham>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

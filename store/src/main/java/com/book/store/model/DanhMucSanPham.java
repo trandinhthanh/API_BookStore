@@ -22,6 +22,9 @@ public class DanhMucSanPham {
 	@Column(name="linkDanhMuc")
 	private String linkDanhMuc;
 
+	@Column(name="trangThai")
+	private String trangThai;
+
 	public long getIdDanhMucSP() {
 		return idDanhMucSP;
 	}
@@ -44,5 +47,13 @@ public class DanhMucSanPham {
 
 	public void setLinkDanhMuc(String linkDanhMuc) {
 		this.linkDanhMuc = linkDanhMuc;
+	}
+
+	public String getTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(String trangThai) {
+		this.trangThai = trangThai;
 	}
 }

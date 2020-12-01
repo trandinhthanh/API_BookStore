@@ -7,6 +7,8 @@ import com.book.store.model.DanhMucSanPham;
 import com.book.store.repository.DanhMucSPRepository;
 import com.book.store.service.DanhMucSPService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,12 +31,11 @@ public class DanhMucSPServiceImpl implements DanhMucSPService {
 
 	@Override
 	public DanhMucSanPham update(DanhMucSanPham danhMucSp) {
+		DanhMucSanPham listDanhMucSanPham = danhMucSPRepository.findId(danhMucSp.getIdDanhMucSP());
+		if (listDanhMucSanPham == null || danhMucSPRepository.findByTenDanhMucContainingIgnoreCase(danhMucSp.getTenDanhMuc()).size() > 0) {
+			return null;
+		}
 		return danhMucSPRepository.save(danhMucSp);
-	}
-
-	@Override
-	public void deleteDanhMucSanPhamById(long id) {
-		danhMucSPRepository.deleteById(id);
 	}
 
 	@Override
@@ -43,8 +44,16 @@ public class DanhMucSPServiceImpl implements DanhMucSPService {
 	}
 
 	@Override
-	public List<DanhMucSanPham> findDanhMucSanPham(long id) {
+	public DanhMucSanPham findDanhMucSanPham(long id) {
 		return danhMucSPRepository.findId(id);
+	}
+
+	@Override
+	public boolean updateTrangThaiById(long idDanhMucSP, String trangThai) {
+		if(danhMucSPRepository.updateTrangThaiById(idDanhMucSP, trangThai) > 0 ){
+			return true;
+		}
+		return false;
 	}
 
 }
