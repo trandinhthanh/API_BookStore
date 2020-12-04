@@ -16,6 +16,9 @@ public interface DanhMucSPRepository extends JpaRepository<DanhMucSanPham, Long>
 	@Query(value ="SELECT c FROM DanhMucSanPham c WHERE c.idDanhMucSP = :id")
 	DanhMucSanPham findId(@Param("id")long id);
 
+	@Query(value ="SELECT d FROM DanhMucSanPham d WHERE d.trangThai = '1' ")
+	List<DanhMucSanPham> getDanhMucSPHoatDong();
+
 	List<DanhMucSanPham> findByTenDanhMucContainingIgnoreCase(String tenDanhMuc);
 
 	@Transactional

@@ -2,6 +2,7 @@ package com.book.store.serviceImpl;
 
 import com.book.store.model.GiamGia;
 import com.book.store.repository.GiamGiaRepository;
+import com.book.store.repository.SanPhamRepository;
 import com.book.store.service.GiamGiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ import java.util.List;
 public class GiamGiaServiceImpl implements GiamGiaService {
     @Autowired
     GiamGiaRepository giamGiaRepository;
+
+    @Autowired
+    SanPhamRepository sanPhamRepository;
 
     @Override
     public List<GiamGia> getGiamGiaHoatDong() {
@@ -69,7 +73,18 @@ public class GiamGiaServiceImpl implements GiamGiaService {
             return false;
         }
         giamGiaRepository.deleteById(idGiamGia);
+        sanPhamRepository.updateIdGiamGia(idGiamGia);
         return true;
+    }
+
+    @Override
+    public List<GiamGia> findByTrangThai(String trangThai) {
+        return giamGiaRepository.findByTrangThaiContainingIgnoreCase(trangThai);
+    }
+
+    @Override
+    public List<GiamGia> findByTenGiamGia(String tenGiamGia) {
+        return giamGiaRepository.findByTenGiamGiaContainingIgnoreCase(tenGiamGia);
     }
 
     private String kiemTraTrangThai(GiamGia giamGia){

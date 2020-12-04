@@ -19,9 +19,15 @@ public class DanhMucSPServiceImpl implements DanhMucSPService {
 
 	@Autowired
 	private DanhMucSPRepository danhMucSPRepository;
+
 	@Override
 	public List<DanhMucSanPham> getAllDanhMucSanPham() {
 		return danhMucSPRepository.findAll();
+	}
+
+	@Override
+	public List<DanhMucSanPham> getDanhMucSPHoatDong() {
+		return danhMucSPRepository.getDanhMucSPHoatDong();
 	}
 
 	@Override
@@ -54,6 +60,11 @@ public class DanhMucSPServiceImpl implements DanhMucSPService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<DanhMucSanPham> findByTenDanhMuc(String tenDanhMuc) {
+		return danhMucSPRepository.findByTenDanhMucContainingIgnoreCase(tenDanhMuc);
 	}
 
 }

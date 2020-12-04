@@ -17,5 +17,7 @@ public interface NguoiDungService {
 	NguoiDungOutput kiemTraDangNhap(String email, String matKhau);
 	NguoiDungOutput kiemTraDangNhapAdmin(String email, String matKhau);
 	boolean editUserByUser(NguoiDungInput input);
-	boolean blockUser(long idNguoiDung);
+	boolean blockUser(long idNguoiDung, String trangThai);
+	List<NguoiDungConvert> locTaiKhoan(int laQuanLy);
+	List<NguoiDungConvert> findByTenNguoiDung(String tenNguoiDung);
 }

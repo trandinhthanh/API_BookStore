@@ -76,7 +76,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Override
 	public NguoiDungOutput kiemTraDangNhap(String email, String matKhau) {
 		NguoiDung nguoiDung = nguoiDungRepository.kiemTraDangNhap(email, matKhau);
-		if(nguoiDung != null && !nguoiDung.isLaQuanLy()){
+		if(nguoiDung != null && !nguoiDung.isLaQuanLy() && nguoiDung.getTrangThai().equals("1")){
 			NguoiDungOutput output = new NguoiDungOutput();
 			output.setIdNguoiDung(nguoiDung.getIdNguoiDung());
 			output.setTenNguoiDung(nguoiDung.getTenNguoiDung());
@@ -123,17 +123,33 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	}
 
 	@Override
-	public boolean blockUser(long idNguoiDung) {
-		if(nguoiDungRepository.blockUser(idNguoiDung) > 0) {
+	public boolean blockUser(long idNguoiDung, String trangThai) {
+		if(nguoiDungRepository.blockUser(idNguoiDung, trangThai) > 0) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
+	public List<NguoiDungConvert> locTaiKhoan(int laQuanLy) {
+		List<NguoiDung> nguoiDungList = nguoiDungRepository.locTaiKhoan(laQuanLy);
+		return convertToNguoiDungConvert(nguoiDungList);
+	}
+
+	@Override
+	public List<NguoiDungConvert> findByTenNguoiDung(String tenNguoiDung) {
+		List<NguoiDung> nguoiDungList = nguoiDungRepository.findByTenNguoiDungContainingIgnoreCase(tenNguoiDung);
+		return convertToNguoiDungConvert(nguoiDungList);
+	}
+
+	@Override
 	public List<NguoiDungConvert> getAllNguoiDung() {
-		List<NguoiDungConvert> outputList = new ArrayList<>();
 		List<NguoiDung> nguoiDungList = nguoiDungRepository.findAll();
+		return convertToNguoiDungConvert(nguoiDungList);
+	}
+
+	private List<NguoiDungConvert> convertToNguoiDungConvert(List<NguoiDung> nguoiDungList){
+		List<NguoiDungConvert> outputList = new ArrayList<>();
 		for (NguoiDung nguoiDung: nguoiDungList) {
 			NguoiDungConvert output = new NguoiDungConvert();
 			output.setIdNguoiDung(nguoiDung.getIdNguoiDung());
@@ -166,5 +182,4 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 		}
 		return outputList;
 	}
-
 }

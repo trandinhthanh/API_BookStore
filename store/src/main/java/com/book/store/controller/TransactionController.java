@@ -1,7 +1,8 @@
 package com.book.store.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import com.book.store.model.GiaoDich;
 import com.book.store.modelConvert.ChiTietDonHangOutput;
@@ -59,5 +60,23 @@ public class TransactionController {
 	public ResponseEntity<ChiTietDonHangOutput> getDetailById(@PathVariable("idNguoiGiaoDich") long idNguoiGiaoDich){
 		ChiTietDonHangOutput detailNguoiDung = transactionService.chiTietNguoiDung(idNguoiGiaoDich);
 		return new ResponseEntity<ChiTietDonHangOutput>(detailNguoiDung, HttpStatus.OK);
+	}
+
+	@GetMapping("/getTransactionByDate/{formDate}/{toDate}")
+	public ResponseEntity<List<ChiTietDonHangOutput>> getTransactionByDate(@PathVariable("formDate") String formDate, @PathVariable("toDate")String toDate){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		List<ChiTietDonHangOutput> list = transactionService.getTransactionByDate(LocalDate.parse(formDate, formatter), LocalDate.parse(toDate, formatter));
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/findByTenKhachHang/{tenKhachHang}")
+	public ResponseEntity<List<ChiTietDonHangOutput>> findByTenKhachHang(@PathVariable("tenKhachHang") String tenKhachHang){
+		List<ChiTietDonHangOutput> outputList = transactionService.findByTenKhachHang(tenKhachHang);
+		return new ResponseEntity<>(outputList, HttpStatus.OK);
+	}
+
+	@GetMapping("/findByIdKhachHang/{idKhachHang}")
+	public ResponseEntity<List<GiaoDich>> findByIdKhachHang(@PathVariable("idKhachHang") long idKhachHang){
+		return new ResponseEntity<List<GiaoDich>>(transactionService.findByIdKhachHang(idKhachHang), HttpStatus.OK);
 	}
 }

@@ -58,4 +58,14 @@ public class GiamGiaController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/findByTrangThai/{trangThai}")
+    public ResponseEntity<List<GiamGia>> findByTrangThai(@PathVariable("trangThai") String trangThai){
+        return new ResponseEntity<>(giamGiaService.findByTrangThai(trangThai), HttpStatus.OK);
+    }
+
+    @GetMapping("/findByTenGiamGia/{tenGiamGia}")
+    public ResponseEntity<List<GiamGia>> findByTenGiamGia(@PathVariable("tenGiamGia") String tenGiamGia){
+        return new ResponseEntity<>(giamGiaService.findByTenGiamGia(tenGiamGia), HttpStatus.OK);
+    }
 }

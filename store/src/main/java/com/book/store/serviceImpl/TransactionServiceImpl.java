@@ -43,30 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public List<ChiTietDonHangOutput> getAllTransaction() {
 		List<GiaoDich> giaoDichList = transactionRepository.findAll();
-		List<ChiTietDonHangOutput> outputList = new ArrayList<>();
-		for (GiaoDich gd : giaoDichList) {
-			ChiTietDonHangOutput output = new ChiTietDonHangOutput();
-			output.setIdGiaoDich(gd.getIdGiaoDich());
-			output.setTenNguoiDung(gd.getTenKhachHang());
-			output.setEmail(gd.getEmail());
-			output.setDiaChi(gd.getDiaChiGiaoHang());
-			output.setSoDienThoai(gd.getSoDienThoai());
-			output.setTongCong(gd.getSoTien());
-			output.setTrangThai(gd.getTrangThai());
-			output.setNgayMua(gd.getNgayTao());
-			List<SanPhamByDonHang> sanPhamByDonHangs = donHangRepository.findByIdGiaoDich(gd.getIdGiaoDich());
-			List<SanPhamThanhTien> sanPhamThanhTienList = new ArrayList<>();
-			for (SanPhamByDonHang sp:sanPhamByDonHangs) {
-				SanPhamThanhTien sanPhamThanhTien = new SanPhamThanhTien();
-				sanPhamThanhTien.setTenSanPham(sp.getTenSanPham());
-				sanPhamThanhTien.setSoLuong(sp.getSoLuong());
-				sanPhamThanhTien.setGia(sp.getTien());
-				sanPhamThanhTienList.add(sanPhamThanhTien);
-			}
-			output.setSanPhamThanhTiens(sanPhamThanhTienList);
-			outputList.add(output);
-		}
-		return outputList;
+		return convertToChiTietDonHangOutput(giaoDichList);
 	}
 
 	@Override
@@ -173,6 +150,50 @@ public class TransactionServiceImpl implements TransactionService {
 		output.setTongCong(tong);
 
 		return output;
+	}
+
+	@Override
+	public List<ChiTietDonHangOutput> getTransactionByDate(LocalDate fromDate, LocalDate toDate) {
+		List<GiaoDich> giaoDichList = transactionRepository.getTransactionByDate(fromDate, toDate);
+		return convertToChiTietDonHangOutput(giaoDichList);
+	}
+
+	@Override
+	public List<ChiTietDonHangOutput> findByTenKhachHang(String tenKhachHang) {
+		List<GiaoDich> giaoDichList = transactionRepository.findByTenKhachHangContainingIgnoreCase(tenKhachHang);
+		return convertToChiTietDonHangOutput(giaoDichList);
+	}
+
+	@Override
+	public List<GiaoDich> findByIdKhachHang(long idKhachHang) {
+		return transactionRepository.findByIdKhachHang(idKhachHang);
+	}
+
+	private List<ChiTietDonHangOutput> convertToChiTietDonHangOutput(List<GiaoDich> giaoDichList){
+		List<ChiTietDonHangOutput> outputList = new ArrayList<>();
+		for (GiaoDich gd : giaoDichList) {
+			ChiTietDonHangOutput output = new ChiTietDonHangOutput();
+			output.setIdGiaoDich(gd.getIdGiaoDich());
+			output.setTenNguoiDung(gd.getTenKhachHang());
+			output.setEmail(gd.getEmail());
+			output.setDiaChi(gd.getDiaChiGiaoHang());
+			output.setSoDienThoai(gd.getSoDienThoai());
+			output.setTongCong(gd.getSoTien());
+			output.setTrangThai(gd.getTrangThai());
+			output.setNgayMua(gd.getNgayTao());
+			List<SanPhamByDonHang> sanPhamByDonHangs = donHangRepository.findByIdGiaoDich(gd.getIdGiaoDich());
+			List<SanPhamThanhTien> sanPhamThanhTienList = new ArrayList<>();
+			for (SanPhamByDonHang sp:sanPhamByDonHangs) {
+				SanPhamThanhTien sanPhamThanhTien = new SanPhamThanhTien();
+				sanPhamThanhTien.setTenSanPham(sp.getTenSanPham());
+				sanPhamThanhTien.setSoLuong(sp.getSoLuong());
+				sanPhamThanhTien.setGia(sp.getTien());
+				sanPhamThanhTienList.add(sanPhamThanhTien);
+			}
+			output.setSanPhamThanhTiens(sanPhamThanhTienList);
+			outputList.add(output);
+		}
+		return outputList;
 	}
 
 	private void  sendMailDonHang(GiaoDich giaoDich)throws MessagingException {

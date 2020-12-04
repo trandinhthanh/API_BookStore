@@ -29,6 +29,12 @@ public class DanhMucSPController {
 		return new ResponseEntity<List<DanhMucSanPham>>(list, HttpStatus.OK);
 	}
 
+	@GetMapping("/getDanhMucSPHoatDong")
+	public ResponseEntity<List<DanhMucSanPham>>  getDanhMucSPHoatDong(){
+		List<DanhMucSanPham> list = danhMucSPService.getDanhMucSPHoatDong();
+		return new ResponseEntity<List<DanhMucSanPham>>(list, HttpStatus.OK);
+	}
+
 	@GetMapping("/getDanhMucById/{idDanhMucSP}")
 	public ResponseEntity<DanhMucSanPham>  getDanhMucById(@PathVariable("idDanhMucSP") long idDanhMucSP){
 		return new ResponseEntity<DanhMucSanPham>(danhMucSPService.findDanhMucSanPham(idDanhMucSP), HttpStatus.OK);
@@ -61,5 +67,11 @@ public class DanhMucSPController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("/findByTenDanhMuc/{tenDanhMuc}")
+	public ResponseEntity<List<DanhMucSanPham>>  findByTenDanhMuc(@PathVariable("tenDanhMuc") String tenDanhMuc){
+		List<DanhMucSanPham> list = danhMucSPService.findByTenDanhMuc(tenDanhMuc);
+		return new ResponseEntity<List<DanhMucSanPham>>(list, HttpStatus.OK);
 	}
 }

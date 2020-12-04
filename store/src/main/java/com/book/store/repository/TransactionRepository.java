@@ -80,6 +80,12 @@ public interface TransactionRepository extends JpaRepository<GiaoDich, Long>{
             "where gd.trang_thai = 2 and gd.ngay_tao between :fromDate and :toDate", nativeQuery = true)
     List<DoanhThuSanPham> getDoanhThuSPByDate(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
 
+    @Query(value ="SELECT gd from GiaoDich gd WHERE gd.ngayTao between :fromDate and :toDate")
+    List<GiaoDich> getTransactionByDate(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
 
+    List<GiaoDich> findByTenKhachHangContainingIgnoreCase(String tenKhachHang);
+
+    @Query(value ="SELECT gd from GiaoDich gd WHERE gd.idKhachHang = :idKhachHang ORDER BY ngayTao ASC")
+    List<GiaoDich> findByIdKhachHang(@Param("idKhachHang") long idKhachHang);
 
 }

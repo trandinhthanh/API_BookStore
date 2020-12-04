@@ -21,4 +21,5 @@ public interface SanPhamService {
 	List<SanPhamOutput> findByTenSanPham(String tenSanPham);
 	List<SanPhamOutput> getListSanPhamGiamGia();
 	void updateLuotXemByIdSanPham(long idSanPham);
+	List<SanPhamOutput> locSanPham(int idDanhMucSP,String loaiSapXep);
 }

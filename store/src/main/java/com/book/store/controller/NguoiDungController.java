@@ -93,11 +93,23 @@ public class NguoiDungController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("/blockUser/{idNguoiDung}")
-	public ResponseEntity<Boolean> blockUser(@PathVariable("idNguoiDung") long idNguoiDung){
-		if(nguoiDungService.blockUser(idNguoiDung)) {
+	@GetMapping("/blockUser/{idNguoiDung}/{trangThai}")
+	public ResponseEntity<Boolean> blockUser(@PathVariable("idNguoiDung") long idNguoiDung, @PathVariable("trangThai") String trangThai){
+		if(nguoiDungService.blockUser(idNguoiDung, trangThai)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@GetMapping("/locTaiKhoan/{laQuanLy}")
+	public ResponseEntity<List<NguoiDungConvert>> locTaiKhoan(@PathVariable("laQuanLy") int laQuanLy){
+		List<NguoiDungConvert> outputs = nguoiDungService.locTaiKhoan(laQuanLy);
+		return new ResponseEntity<>(outputs, HttpStatus.OK);
+	}
+
+	@GetMapping("/findByTenNguoiDung/{tenNguoiDung}")
+	public ResponseEntity<List<NguoiDungConvert>> findByTenNguoiDung(@PathVariable("tenNguoiDung") String tenNguoiDung){
+		List<NguoiDungConvert> outputs = nguoiDungService.findByTenNguoiDung(tenNguoiDung);
+		return new ResponseEntity<>(outputs, HttpStatus.OK);
 	}
 }

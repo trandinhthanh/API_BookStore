@@ -1,9 +1,7 @@
 package com.book.store.serviceImpl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.book.store.model.DanhMucSanPham;
 import com.book.store.model.GiamGia;
@@ -158,7 +156,9 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Override
 	public List<SanPhamOutput> getListSanPhamGiamGia() {
 		List<SanPhamOutput> outputs = new ArrayList<>();
-		List<SanPham> listSanPham = sanPhamRepository.getListSanPhamGiamGia();
+		List<String> listIdGiamGia = giamGiaRepository.getListGiamGiaHoatDong();
+		String idGiamGias = String.join("," , listIdGiamGia);
+		List<SanPham> listSanPham = sanPhamRepository.getListSanPhamGiamGia(idGiamGias);
 		for (SanPham s: listSanPham) {
 			outputs.add(convertToSanPhamOutput(s));
 		}
@@ -170,13 +170,48 @@ public class SanPhamServiceImpl implements SanPhamService {
 		sanPhamRepository.updateLuotXemByIdSanPham(idSanPham);
 	}
 
+	@Override
+	public List<SanPhamOutput> locSanPham(int idDanhMucSP, String loaiSapXep) {
+		List<SanPhamOutput> outputs = new ArrayList<>();
+		if(idDanhMucSP == 0){
+			List<SanPham> listSanPham = sanPhamRepository.findAll();
+			for (SanPham s: listSanPham) {
+				outputs.add(convertToSanPhamOutput(s));
+			}
+		}else {
+			List<SanPham> listSanPham = sanPhamRepository.getSanPhamTheoDanhMuc(idDanhMucSP);
+			for (SanPham s: listSanPham) {
+				outputs.add(convertToSanPhamOutput(s));
+			}
+		}
+		if(!outputs.isEmpty()) {
+			if (loaiSapXep.equals("cao")) {
+				Collections.sort(outputs, new Comparator<SanPhamOutput>() {
+					@Override
+					public int compare(SanPhamOutput x, SanPhamOutput y) {
+						return Double.compare(x.getGia(), y.getGia());
+					}
+				});
+
+			} else if (loaiSapXep.equals("thap")) {
+				Collections.sort(outputs, new Comparator<SanPhamOutput>() {
+					@Override
+					public int compare(SanPhamOutput x, SanPhamOutput y) {
+						return Double.compare(y.getGia(),x.getGia());
+					}
+				});
+			}
+		}
+		return outputs;
+	}
+
 	private SanPhamOutput convertToSanPhamOutput(SanPham sanPham){
 		List<String> links = new ArrayList<>();
 		SanPhamOutput sanPhamOutput = new SanPhamOutput();
 		sanPhamOutput.setIdSanPham(sanPham.getIdSanPham());
 		sanPhamOutput.setIdDanhMucSP(sanPham.getIdDanhMucSP());
 		sanPhamOutput.setIdGiamGia(sanPham.getIdGiamGia());
-		DanhMucSanPham danhMucSanPham = danhMucSPRepository.findId(sanPham.getIdDanhMucSP()).get(0);
+		DanhMucSanPham danhMucSanPham = danhMucSPRepository.findId(sanPham.getIdDanhMucSP());
 		sanPhamOutput.setTenDanhMucSP(danhMucSanPham.getTenDanhMuc());
 		sanPhamOutput.setTenSanPham(sanPham.getTenSanPham());
 		sanPhamOutput.setGiaGoc(sanPham.getGiaGoc());
