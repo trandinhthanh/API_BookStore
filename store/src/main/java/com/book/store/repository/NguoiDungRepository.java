@@ -30,5 +30,10 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Long>{
     @Query(value ="SELECT n.* FROM nguoi_dung n WHERE n.la_quan_ly = :laQuanLy", nativeQuery = true)
     List<NguoiDung> locTaiKhoan(@Param("laQuanLy")int laQuanLy);
 
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE NguoiDung SET matKhau = soDienThoai WHERE email = :email AND laQuanLy = :laQuanLy")
+    Integer quenMatKhau(@Param("email") String email, @Param("laQuanLy") boolean laQuanLy);
+
     List<NguoiDung> findByTenNguoiDungContainingIgnoreCase(String tenNguoiDung);
 }

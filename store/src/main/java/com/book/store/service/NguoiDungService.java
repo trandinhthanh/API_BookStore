@@ -20,4 +20,5 @@ public interface NguoiDungService {
 	boolean blockUser(long idNguoiDung, String trangThai);
 	List<NguoiDungConvert> locTaiKhoan(int laQuanLy);
 	List<NguoiDungConvert> findByTenNguoiDung(String tenNguoiDung);
+	boolean quenMatKhau(String email, boolean laQuanLy);
 }

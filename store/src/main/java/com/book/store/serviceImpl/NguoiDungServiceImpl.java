@@ -106,9 +106,9 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Override
 	public boolean editUserByUser(NguoiDungInput input) {
 		NguoiDung nguoiDung = nguoiDungRepository.findById(input.getIdNguoiDung()).get();
-		if(input.getMatKhauCu() == ""){
+		if(input.getMatKhauCu().equals("")){
 		}
-		else if(nguoiDung.getMatKhau() == input.getMatKhauCu()) {
+		else if(nguoiDung.getMatKhau().equals(input.getMatKhauCu())) {
 			nguoiDung.setMatKhau(input.getMatKhauMoi());
 		}
 		else {
@@ -140,6 +140,15 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	public List<NguoiDungConvert> findByTenNguoiDung(String tenNguoiDung) {
 		List<NguoiDung> nguoiDungList = nguoiDungRepository.findByTenNguoiDungContainingIgnoreCase(tenNguoiDung);
 		return convertToNguoiDungConvert(nguoiDungList);
+	}
+
+	@Override
+	public boolean quenMatKhau(String email, boolean laQuanLy) {
+		Integer result = nguoiDungRepository.quenMatKhau(email, laQuanLy);
+		if(result == null || result < 1) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

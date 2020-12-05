@@ -10,13 +10,7 @@ import com.book.store.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("nguoiDung")
@@ -111,5 +105,16 @@ public class NguoiDungController {
 	public ResponseEntity<List<NguoiDungConvert>> findByTenNguoiDung(@PathVariable("tenNguoiDung") String tenNguoiDung){
 		List<NguoiDungConvert> outputs = nguoiDungService.findByTenNguoiDung(tenNguoiDung);
 		return new ResponseEntity<>(outputs, HttpStatus.OK);
+	}
+
+	@PostMapping(value="/quenMatKhau")
+	public ResponseEntity<Boolean> quenMatKhau(
+		@RequestParam("email") String email,
+		@RequestParam("laQuanLy") boolean laQuanLy
+	){
+		if( nguoiDungService.quenMatKhau(email, laQuanLy)){
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
