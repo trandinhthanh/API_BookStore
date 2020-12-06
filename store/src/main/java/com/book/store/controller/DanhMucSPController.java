@@ -41,24 +41,24 @@ public class DanhMucSPController {
 	}
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
-	 public ResponseEntity<Void> createDanhMucSanPham(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
+	 public ResponseEntity<DanhMucSanPham> createDanhMucSanPham(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
 		List<DanhMucSanPham> listDanhMucSanPham = danhMucSPService.getAllDanhMucSanPham();
-		for( DanhMucSanPham danhmucSP : listDanhMucSanPham)
-			if(danhMucSP.getTenDanhMuc().equals(danhmucSP.getTenDanhMuc())) {
-				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		for( DanhMucSanPham danhMuc : listDanhMucSanPham) {
+			if (danhMucSP.getTenDanhMuc().equals(danhMuc.getTenDanhMuc())) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-			else {
-				danhMucSPService.createDanhMucSanPham(danhMucSP);
-			} 
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		}
+		DanhMucSanPham danhMuc = danhMucSPService.createDanhMucSanPham(danhMucSP);
+		return new ResponseEntity<>(danhMuc, HttpStatus.CREATED);
 	}
 	//Sua
 	@PostMapping(value="/update",headers="Accept=application/json")
-	public ResponseEntity<Void> update(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
-		if (danhMucSPService.update(danhMucSP) == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<DanhMucSanPham> update(@RequestBody DanhMucSanPham danhMucSP, UriComponentsBuilder ucBuilder){
+		DanhMucSanPham danhMuc = danhMucSPService.update(danhMucSP);
+		if ( danhMuc == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>(danhMuc, HttpStatus.OK);
     }
 
 	@GetMapping("/updateTrangThai/{idDanhMucSP}/{trangThai}")

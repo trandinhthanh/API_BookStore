@@ -38,8 +38,14 @@ public class DanhMucSPServiceImpl implements DanhMucSPService {
 	@Override
 	public DanhMucSanPham update(DanhMucSanPham danhMucSp) {
 		DanhMucSanPham listDanhMucSanPham = danhMucSPRepository.findId(danhMucSp.getIdDanhMucSP());
-		if (listDanhMucSanPham == null || danhMucSPRepository.findByTenDanhMucContainingIgnoreCase(danhMucSp.getTenDanhMuc()).size() > 0) {
+		if (listDanhMucSanPham == null) {
 			return null;
+		}
+		List<DanhMucSanPham> list = danhMucSPRepository.findByTenDanhMucContainingIgnoreCase(danhMucSp.getTenDanhMuc());
+		for (DanhMucSanPham danhMuc: list) {
+			if(danhMucSp.getTenDanhMuc().equals(danhMuc.getTenDanhMuc())){
+				return null;
+			}
 		}
 		return danhMucSPRepository.save(danhMucSp);
 	}

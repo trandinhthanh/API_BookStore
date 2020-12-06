@@ -73,7 +73,7 @@ public class GiamGiaServiceImpl implements GiamGiaService {
             return false;
         }
         giamGiaRepository.deleteById(idGiamGia);
-        sanPhamRepository.updateIdGiamGia(idGiamGia);
+        sanPhamRepository.updateIdGiamGia((int) idGiamGia);
         return true;
     }
 

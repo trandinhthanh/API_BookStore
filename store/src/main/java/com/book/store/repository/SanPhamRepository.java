@@ -68,6 +68,6 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
 	@Transactional
 	@Modifying
 	@Query(value ="UPDATE SanPham SET idGiamGia = 0 WHERE idGiamGia = :idGiamGia")
-	Integer updateIdGiamGia(@Param("idGiamGia")long idGiamGia);
+	Integer updateIdGiamGia(@Param("idGiamGia")int idGiamGia);
 
 }
