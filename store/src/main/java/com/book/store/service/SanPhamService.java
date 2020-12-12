@@ -15,7 +15,6 @@ public interface SanPhamService {
 	List<SanPhamOutput> getSanPhamTheoDanhMuc(int danhMucSp );
 	List<SanPhamOutput> sanPhamNoiBat();
 	List<SanPhamOutput> sanPhamLienQuan(int danhMucSp );
-	List<SanPhamOutput> getNameSanPham();
 	List<SanPhamOutput> getSanPhamVoiSoLuong();
 	ListSanPhamOutput getSanPhamTheoPage(String linkDanhMuc, int numberPage);
 	List<SanPhamOutput> findByTenSanPham(String tenSanPham);

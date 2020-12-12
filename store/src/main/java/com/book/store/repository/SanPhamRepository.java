@@ -32,8 +32,6 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
 	@Query(value ="SELECT * FROM san_pham WHERE trang_thai = '1' AND id_danh_mucsp  = :idDanhMucSP ORDER BY luot_xem DESC LIMIT 5 ", nativeQuery = true)
 	List<SanPham> sanPhamLienQuan(@Param("idDanhMucSP")long idDanhMucSP);
 	
-	@Query(value ="SELECT idSanPham, tenSanPham FROM SanPham")
-	List<SanPham> getTenSanPham();
 
 	@Transactional
 	@Modifying

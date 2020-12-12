@@ -30,11 +30,6 @@ public class SanPhamController {
 		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
 	}
 
-	@GetMapping("/listTenSanPham")
-	public ResponseEntity<List<SanPhamOutput>>  getTenSanPham(){
-		List<SanPhamOutput> list = sanPhamService.getNameSanPham();
-		return new ResponseEntity<List<SanPhamOutput>>(list, HttpStatus.OK);
-	}
 
 	@GetMapping("/getSanPhamByID/{id}")
 	public SanPhamOutput getSanPhamByID(@PathVariable("id") long id){

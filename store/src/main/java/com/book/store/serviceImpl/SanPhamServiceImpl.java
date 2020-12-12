@@ -111,15 +111,6 @@ public class SanPhamServiceImpl implements SanPhamService {
 	}
 
 	@Override
-	public List<SanPhamOutput> getNameSanPham() {
-		List<SanPhamOutput> outputs = new ArrayList<>();
-		List<SanPham> listSanPham = sanPhamRepository.getTenSanPham();
-		for (SanPham s: listSanPham) {
-			outputs.add(convertToSanPhamOutput(s));
-		}
-		return outputs;
-	}
-	@Override
 	public List<SanPhamOutput> getSanPhamVoiSoLuong() {
 		List<SanPhamOutput> outputs = new ArrayList<>();
 		List<SanPham> listSanPham = sanPhamRepository.getSanPhamVoiSoLuong();
