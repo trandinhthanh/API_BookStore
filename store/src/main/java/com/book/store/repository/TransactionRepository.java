@@ -32,7 +32,7 @@ public interface TransactionRepository extends JpaRepository<GiaoDich, Long>{
     @Query(value ="UPDATE GiaoDich SET trangThai = :trangThai WHERE idGiaoDich = :idGiaoDich")
     Integer updateByTrangThai(@Param("idGiaoDich")long idGiaoDich, @Param("trangThai")String trangThai );
 
-    @Query(value ="SELECT SUM(g.idGiaoDich) FROM GiaoDich g WHERE g.idKhachHang = :idKhachHang AND g.trangThai ='5' ")
+    @Query(value ="SELECT COUNT(g.idGiaoDich) FROM GiaoDich g WHERE g.idKhachHang = :idKhachHang AND g.trangThai ='5' ")
     Integer getGiaoDichCancel(@Param("idKhachHang")long idKhachHang);
 
     @Query(value = "select IFNULL(count(g.id_giao_dich),0) from giao_dich g where g.trang_thai not in ('3','5')", nativeQuery = true)
@@ -87,5 +87,12 @@ public interface TransactionRepository extends JpaRepository<GiaoDich, Long>{
 
     @Query(value ="SELECT gd from GiaoDich gd WHERE gd.idKhachHang = :idKhachHang ORDER BY ngayTao ASC")
     List<GiaoDich> findByIdKhachHang(@Param("idKhachHang") long idKhachHang);
+
+    @Query(value ="select count(dh.id_giao_dich) from don_hang dh, san_pham sp \n" +
+            "where dh.id_san_pham = sp.id_san_pham \n" +
+            "and sp.so_luong >= dh.so_luong \n" +
+            "and dh.trang_thai = '0' \n" +
+            "and dh.id_nguoi_giao_dich =:idKhachHang ", nativeQuery = true)
+    Integer countGiaoDichAccept(@Param("idKhachHang") long idKhachHang);
 
 }

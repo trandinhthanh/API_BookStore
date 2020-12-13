@@ -171,7 +171,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 			if(!nguoiDung.isLaQuanLy()){
 				Integer soGiaoDichCancel = transactionRepository.getGiaoDichCancel(nguoiDung.getIdNguoiDung());
 				if(nguoiDung.getTrangThai().equals("1")) {
-					if (soGiaoDichCancel == null) {
+					if (soGiaoDichCancel == 0) {
 						output.setTrangThai("Đang hoạt động");
 					} else {
 						output.setTrangThai("Không nhận - " + soGiaoDichCancel);

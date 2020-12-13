@@ -79,4 +79,9 @@ public class TransactionController {
 	public ResponseEntity<List<GiaoDich>> findByIdKhachHang(@PathVariable("idKhachHang") long idKhachHang){
 		return new ResponseEntity<List<GiaoDich>>(transactionService.findByIdKhachHang(idKhachHang), HttpStatus.OK);
 	}
+
+	@GetMapping("/checkTonKho/{idKhachHang}")
+	public ResponseEntity<Boolean> checkTonKho(@PathVariable("idKhachHang") long idKhachHang){
+		return new ResponseEntity<Boolean>(transactionService.checkTonKho(idKhachHang), HttpStatus.OK);
+	}
 }

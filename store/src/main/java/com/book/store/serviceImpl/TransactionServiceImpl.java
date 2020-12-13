@@ -168,6 +168,14 @@ public class TransactionServiceImpl implements TransactionService {
 		return transactionRepository.findByIdKhachHang(idKhachHang);
 	}
 
+	@Override
+	public boolean checkTonKho(long idKhachHang) {
+		if(transactionRepository.countGiaoDichAccept(idKhachHang) == donHangRepository.findByIdNguoiGiaoDich(idKhachHang).size()){
+			return true;
+		}
+		return false;
+	}
+
 	private List<ChiTietDonHangOutput> convertToChiTietDonHangOutput(List<GiaoDich> giaoDichList){
 		List<ChiTietDonHangOutput> outputList = new ArrayList<>();
 		for (GiaoDich gd : giaoDichList) {
