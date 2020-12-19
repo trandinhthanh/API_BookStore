@@ -34,7 +34,6 @@ public class NguoiDungController {
 	
 	@PostMapping(value="/create",headers="Accept=application/json")
 	 public ResponseEntity<Boolean> createNguoiDung(@RequestBody NguoiDung nguoiDung ){
-//		nguoiDung.setMatKhau(Base64.getEncoder().encodeToString(nguoiDung.getMatKhau().getBytes()));
 		if(nguoiDungService.createNguoiDung(nguoiDung)) {
 			return new ResponseEntity<Boolean>(true ,HttpStatus.CREATED);
 		}

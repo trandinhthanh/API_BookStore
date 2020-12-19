@@ -29,6 +29,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	
 	@Override
 	public boolean createNguoiDung(NguoiDung nguoiDung) {
+		nguoiDung.setTrangThai("1");
 		nguoiDung.setNgayTao(LocalDate.now());
 		List<NguoiDung> listNguoiDung = nguoiDungRepository.findAll();
 		for( NguoiDung nd : listNguoiDung){
