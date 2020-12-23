@@ -1,9 +1,9 @@
-package com.qlam.service;
+package com.book.store.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qlam.config.PaypalPaymentIntent;
-import com.qlam.config.PaypalPaymentMethod;
+import com.book.store.config.PaypalPaymentIntent;
+import com.book.store.config.PaypalPaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

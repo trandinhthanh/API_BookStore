@@ -1,4 +1,4 @@
-package com.qlam.utils;
+package com.book.store.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,4 +19,6 @@ public class Utils {
         }
         return url.toString();
     }
+
+    public static final String URL = "http://localhost:8080/";
 }

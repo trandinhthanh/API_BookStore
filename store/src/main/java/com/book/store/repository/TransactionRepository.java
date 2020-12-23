@@ -85,7 +85,7 @@ public interface TransactionRepository extends JpaRepository<GiaoDich, Long>{
 
     List<GiaoDich> findByTenKhachHangContainingIgnoreCase(String tenKhachHang);
 
-    @Query(value ="SELECT gd from GiaoDich gd WHERE gd.idKhachHang = :idKhachHang ORDER BY ngayTao ASC")
+    @Query(value ="SELECT gd from GiaoDich gd WHERE gd.idKhachHang = :idKhachHang ORDER BY ngayTao DESC")
     List<GiaoDich> findByIdKhachHang(@Param("idKhachHang") long idKhachHang);
 
     @Query(value ="select count(dh.id_giao_dich) from don_hang dh, san_pham sp \n" +

@@ -1,4 +1,4 @@
-package com.qlam.config;
+package com.book.store.config;
 
 public enum PaypalPaymentMethod {
     credit_card, paypal

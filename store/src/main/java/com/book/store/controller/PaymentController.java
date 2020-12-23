@@ -1,62 +1,59 @@
-package com.qlam.controller;
+package com.book.store.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.qlam.utils.Utils;
+import com.book.store.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import com.qlam.config.PaypalPaymentIntent;
-import com.qlam.config.PaypalPaymentMethod;
-import com.qlam.service.PaypalService;
+import com.book.store.config.PaypalPaymentIntent;
+import com.book.store.config.PaypalPaymentMethod;
+import com.book.store.serviceImpl.PaypalService;
 
-@Controller
+import javax.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping("paypal")
+@CrossOrigin(origins = "*")
 public class PaymentController {
 
-    public static final String URL_PAYPAL_SUCCESS = "pay/success";
-    public static final String URL_PAYPAL_CANCEL = "pay/cancel";
+    public static final String URL_PAYPAL_SUCCESS = "/pay/success";
+    public static final String URL_PAYPAL_CANCEL = "/pay/cancel";
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private PaypalService paypalService;
 
-    @GetMapping("/")
-    public String index(){
-        return "index";
-    }
-
     @PostMapping("/pay")
-    public String pay(HttpServletRequest request,@RequestParam("price") double price ){
-        String cancelUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
-        String successUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
+    public ResponseEntity<String> pay(HttpServletRequest request, @RequestParam("price") double price ){
+        String cancelUrl = Utils.getBaseURL(request) + "/paypal" + URL_PAYPAL_CANCEL;
+        String successUrl = Utils.getBaseURL(request) + "/paypal" + URL_PAYPAL_SUCCESS;
         try {
             Payment payment = paypalService.createPayment(
                     price,
                     "USD",
                     PaypalPaymentMethod.paypal,
                     PaypalPaymentIntent.sale,
-                    "payment description",
+                    "Thanh toán đơn hàng từ BookStore",
                     cancelUrl,
                     successUrl);
             for(Links links : payment.getLinks()){
                 if(links.getRel().equals("approval_url")){
-                    return "redirect:" + links.getHref();
+                    return new ResponseEntity<>(links.getHref(), HttpStatus.OK);
                 }
             }
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
         }
-        return "redirect:/";
+        return  new ResponseEntity<>("redirect:/", HttpStatus.OK);
     }
 
     @GetMapping(URL_PAYPAL_CANCEL)
