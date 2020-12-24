@@ -123,7 +123,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Override
 	public ListSanPhamOutput getSanPhamTheoPage(String linkDanhMuc, int numberPage){
 		ListSanPhamOutput listSanPhamOutput = new ListSanPhamOutput();
-		int pageSize = 2;
+		int pageSize = 8;
 		List<SanPhamOutput> outputs = new ArrayList<>();
 		Page<SanPham> pageSanPham = sanPhamRepository.findByIdDanhMucSP( linkDanhMuc, PageRequest.of(numberPage - 1, pageSize));
 		for (SanPham s: pageSanPham.getContent()) {

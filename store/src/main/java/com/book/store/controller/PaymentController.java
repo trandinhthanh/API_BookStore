@@ -26,19 +26,22 @@ public class PaymentController {
 
     public static final String URL_PAYPAL_SUCCESS = "/pay/success";
     public static final String URL_PAYPAL_CANCEL = "/pay/cancel";
+    public static final double VND_TO_USD = 23000;
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private PaypalService paypalService;
 
+    //chuyển sang trang web paypal
     @PostMapping("/pay")
     public ResponseEntity<String> pay(HttpServletRequest request, @RequestParam("price") double price ){
         String cancelUrl = Utils.getBaseURL(request) + "/paypal" + URL_PAYPAL_CANCEL;
         String successUrl = Utils.getBaseURL(request) + "/paypal" + URL_PAYPAL_SUCCESS;
+        double priceUSD = price/VND_TO_USD;
         try {
             Payment payment = paypalService.createPayment(
-                    price,
+                    priceUSD,
                     "USD",
                     PaypalPaymentMethod.paypal,
                     PaypalPaymentIntent.sale,
@@ -56,11 +59,13 @@ public class PaymentController {
         return  new ResponseEntity<>("redirect:/", HttpStatus.OK);
     }
 
+    // trả về kết quà nếu hủy giao dịch
     @GetMapping(URL_PAYPAL_CANCEL)
     public String cancelPay(){
         return "cancel";
     }
 
+    // khi thanh toán thành công gọi về trang index, xữ lý lưu giao dịch, gửi email xác nhận
     @GetMapping(URL_PAYPAL_SUCCESS)
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
         try {
