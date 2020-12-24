@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.paypal.api.payments.Links;
@@ -16,10 +16,11 @@ import com.paypal.base.rest.PayPalRESTException;
 import com.book.store.config.PaypalPaymentIntent;
 import com.book.store.config.PaypalPaymentMethod;
 import com.book.store.serviceImpl.PaypalService;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
+@Controller
 @RequestMapping("paypal")
 @CrossOrigin(origins = "*")
 public class PaymentController {
@@ -60,22 +61,24 @@ public class PaymentController {
     }
 
     // trả về kết quà nếu hủy giao dịch
-    @GetMapping(URL_PAYPAL_CANCEL)
-    public String cancelPay(){
-        return "cancel";
+    @RequestMapping(value = URL_PAYPAL_CANCEL, method = RequestMethod.GET)
+    public ModelAndView cancelPay(){
+        ModelAndView pav = new ModelAndView("cancel");
+        return pav;
     }
 
     // khi thanh toán thành công gọi về trang index, xữ lý lưu giao dịch, gửi email xác nhận
-    @GetMapping(URL_PAYPAL_SUCCESS)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
+    @RequestMapping(value = URL_PAYPAL_SUCCESS, method = RequestMethod.GET)
+    public ModelAndView successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
+        ModelAndView pav = new ModelAndView("success");
         try {
             Payment payment = paypalService.executePayment(paymentId, payerId);
             if(payment.getState().equals("approved")){
-                return "success";
+                return pav;
             }
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
         }
-        return "redirect:/";
+        return pav;
     }
 }
