@@ -5,6 +5,7 @@ import com.book.store.repository.GiamGiaRepository;
 import com.book.store.repository.SanPhamRepository;
 import com.book.store.service.GiamGiaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,7 +30,7 @@ public class GiamGiaServiceImpl implements GiamGiaService {
     @Override
     public List<GiamGia> getAllGiamGia() {
         List<GiamGia> output = new ArrayList<>();
-        for (GiamGia giamGia: giamGiaRepository.findAll()){
+        for (GiamGia giamGia: giamGiaRepository.findAll(Sort.by(Sort.Direction.DESC, "idGiamGia"))){
             giamGia.setTrangThai(kiemTraTrangThai(giamGia));
             output.add(giamGia);
         }

@@ -14,6 +14,7 @@ import com.book.store.repository.SanPhamRepository;
 import com.book.store.repository.TransactionRepository;
 import com.book.store.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
@@ -41,7 +42,7 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	@Override
 	public List<ChiTietDonHangOutput> getAllTransaction() {
-		List<GiaoDich> giaoDichList = transactionRepository.findAll();
+		List<GiaoDich> giaoDichList = transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "idGiaoDich"));
 		return convertToChiTietDonHangOutput(giaoDichList);
 	}
 
@@ -164,8 +165,8 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public List<GiaoDich> findByIdKhachHang(long idKhachHang) {
-		return transactionRepository.findByIdKhachHang(idKhachHang);
+	public List<ChiTietDonHangOutput> findByIdKhachHang(long idKhachHang) {
+		return convertToChiTietDonHangOutput(transactionRepository.findByIdKhachHang(idKhachHang));
 	}
 
 	@Override

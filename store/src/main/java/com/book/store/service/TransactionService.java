@@ -17,6 +17,6 @@ public interface TransactionService {
 	ChiTietDonHangOutput chiTietNguoiDung(long id);
 	List<ChiTietDonHangOutput> getTransactionByDate(LocalDate fromDate, LocalDate toDate);
 	List<ChiTietDonHangOutput> findByTenKhachHang(String tenKhachHang);
-	List<GiaoDich> findByIdKhachHang(long idKhachHang);
+	List<ChiTietDonHangOutput> findByIdKhachHang(long idKhachHang);
 	boolean checkTonKho(long idKhachHang);
 }

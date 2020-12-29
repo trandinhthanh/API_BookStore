@@ -13,6 +13,7 @@ import com.book.store.repository.NguoiDungRepository;
 import com.book.store.repository.TransactionRepository;
 import com.book.store.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -154,7 +155,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
 	@Override
 	public List<NguoiDungConvert> getAllNguoiDung() {
-		List<NguoiDung> nguoiDungList = nguoiDungRepository.findAll();
+		List<NguoiDung> nguoiDungList = nguoiDungRepository.findAll(Sort.by(Sort.Direction.DESC, "idNguoiDung"));
 		return convertToNguoiDungConvert(nguoiDungList);
 	}
 

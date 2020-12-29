@@ -17,6 +17,7 @@ import com.book.store.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,7 +40,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Override
 	public List<SanPhamOutput> getAllSanPham() {
 		List<SanPhamOutput> outputs = new ArrayList<>();
-		List<SanPham> listSanPham = sanPhamRepository.findAll();
+		List<SanPham> listSanPham = sanPhamRepository.findAll(Sort.by(Sort.Direction.DESC, "idSanPham"));
 		for (SanPham s: listSanPham) {
 			outputs.add(convertToSanPhamOutput(s));
 		}
