@@ -27,8 +27,9 @@ public class HinhAnhServiceImpl implements HinhAnhService {
     @Override
     public byte[] getImg(String id) {
         if(id != null) {
-            Path path = Paths.get(URL + id);
             try {
+                java.net.URL res = getClass().getClassLoader().getResource("image/"+id);
+                Path path = Paths.get(res.toURI());
                 byte[] fileImage = Files.readAllBytes(path);
                 return fileImage;
             } catch (Exception e) {
