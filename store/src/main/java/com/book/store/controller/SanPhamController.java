@@ -110,9 +110,9 @@ public class SanPhamController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping("/locSanPham/{idDanhMucSP}/{loaiSapXep}")
-	public ResponseEntity<List<SanPhamOutput>>  locSanPham(@PathVariable("idDanhMucSP") int idDanhMucSP, @PathVariable("loaiSapXep") String loaiSapXep){
-		List<SanPhamOutput> list = sanPhamService.locSanPham(idDanhMucSP, loaiSapXep);
+	@GetMapping("/locSanPham/{idDanhMucSP}/{loaiSapXep}/{loaiTrangThai}")
+	public ResponseEntity<List<SanPhamOutput>>  locSanPham(@PathVariable("idDanhMucSP") int idDanhMucSP, @PathVariable("loaiSapXep") String loaiSapXep,@PathVariable("loaiTrangThai") int loaiTrangThai){
+		List<SanPhamOutput> list = sanPhamService.locSanPham(idDanhMucSP, loaiSapXep, loaiTrangThai);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	

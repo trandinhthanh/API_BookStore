@@ -163,7 +163,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 	}
 
 	@Override
-	public List<SanPhamOutput> locSanPham(int idDanhMucSP, String loaiSapXep) {
+	public List<SanPhamOutput> locSanPham(int idDanhMucSP, String loaiSapXep, int loaiTrangThai) {
 		List<SanPhamOutput> outputs = new ArrayList<>();
 		if(idDanhMucSP == 0){
 			List<SanPham> listSanPham = sanPhamRepository.findAll();
@@ -193,6 +193,12 @@ public class SanPhamServiceImpl implements SanPhamService {
 					}
 				});
 			}
+		}if(loaiTrangThai == 0){ // dang an
+			outputs.removeIf(x -> !"0".equals(x.getTrangThai()));
+		}else if(loaiTrangThai == 1){ // con hang
+			outputs.removeIf(x -> !"1".equals(x.getTrangThai()) || x.getSoLuong() <= 0 );
+		}else if(loaiTrangThai == 2){ // het hang
+			outputs.removeIf(x -> !"1".equals(x.getTrangThai()) || x.getSoLuong() > 0 );
 		}
 		return outputs;
 	}

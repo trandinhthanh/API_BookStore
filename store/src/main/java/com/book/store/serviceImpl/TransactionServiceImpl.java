@@ -14,6 +14,7 @@ import com.book.store.repository.SanPhamRepository;
 import com.book.store.repository.TransactionRepository;
 import com.book.store.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	SanPhamRepository sanPhamRepository;
 
+	@Value("${paypal.vnd_to_usd}")
+	private double VND_TO_USD;
 
 	private MailConfig mailConfig = new MailConfig();
 
@@ -53,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
 				giaoDich.setTrangThai("0");
 				giaoDich.setNgayTao(toDay.plusDays(1));
 				GiaoDich giaoDichOutput = transactionRepository.save(giaoDich);
-				sendMailDonHang(giaoDichOutput);
+				//sendMailDonHang(giaoDichOutput);
 			List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(giaoDich.getIdKhachHang());
 			for (ChiTietDonHang donHang: chiTietDonHang) {
 				double thanhTien = 0;
@@ -80,6 +83,14 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public boolean updateTrangThai(long idGiaoDich, String trangThai) {
 		if(transactionRepository.updateByTrangThai(idGiaoDich, trangThai) > 0){
+			GiaoDich gd = transactionRepository.findById(idGiaoDich).get();
+			if(gd.getLoaiThanhToan().equals("PayPal")) {
+				try {
+					sendMailRefundDonHang(gd);
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			}
 			return true;
 		}
 		return false;
@@ -99,6 +110,7 @@ public class TransactionServiceImpl implements TransactionService {
 		output.setTrangThai(gd.getTrangThai());
 		output.setNgayMua(gd.getNgayTao());
 		output.setGhiChu(gd.getGhiChu());
+		output.setLoaiThanhToan(gd.getLoaiThanhToan());
 		List<SanPhamByDonHang> sanPhamByDonHangs = donHangRepository.findByIdGiaoDich(gd.getIdGiaoDich());
 		List<SanPhamThanhTien> sanPhamThanhTienList = new ArrayList<>();
 		for (SanPhamByDonHang sp:sanPhamByDonHangs) {
@@ -189,6 +201,7 @@ public class TransactionServiceImpl implements TransactionService {
 			output.setTongCong(gd.getSoTien());
 			output.setTrangThai(gd.getTrangThai());
 			output.setNgayMua(gd.getNgayTao());
+			output.setLoaiThanhToan(gd.getLoaiThanhToan());
 			List<SanPhamByDonHang> sanPhamByDonHangs = donHangRepository.findByIdGiaoDich(gd.getIdGiaoDich());
 			List<SanPhamThanhTien> sanPhamThanhTienList = new ArrayList<>();
 			for (SanPhamByDonHang sp:sanPhamByDonHangs) {
@@ -227,6 +240,31 @@ public class TransactionServiceImpl implements TransactionService {
         // Send mail
         this.mailConfig.getJavaMailSender().send(mimeMessage);
     }
+
+	private void  sendMailRefundDonHang(GiaoDich giaoDich)throws MessagingException {
+		final Locale locale = Locale.getDefault();
+
+		// Prepare the evaluation context
+		final Context ctx = new Context(locale);
+		ctx.setVariable("giaoDich", giaoDich);
+		ctx.setVariable("soTien", formatMoney(giaoDich.getSoTien()));
+		ctx.setVariable("tienPayPal", giaoDich.getSoTien()/VND_TO_USD);
+		ctx.setVariable("sanPhams", getDongHangByIdNguoiDung(giaoDich.getIdKhachHang()));
+
+		// Prepare message using a Spring helper
+		final MimeMessage mimeMessage = this.mailConfig.getJavaMailSender().createMimeMessage();
+		final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+		message.setSubject("Thông tin hoàn tiền đơn hàng #" + giaoDich.getIdGiaoDich() + " tại BookStore");
+		message.setTo(giaoDich.getEmail());
+
+		// Create the HTML body using Thymeleaf
+		// doc html va do du lieu
+		final String htmlContent = this.springMailConfig.emailTemplateEngine().process("sendEmailRefundOrder", ctx);
+		message.setText(htmlContent, true); // true = isHtml
+
+		// Send mail
+		this.mailConfig.getJavaMailSender().send(mimeMessage);
+	}
 
     private List<DonHangOutput> getDongHangByIdNguoiDung(long idNguoiDung){
 		LocalDate toDay = LocalDate.now();

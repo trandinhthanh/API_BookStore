@@ -15,6 +15,7 @@ public class ChiTietDonHangOutput {
     private LocalDate ngayMua;
     private String ghiChu;
     private String trangThai;
+    private String loaiThanhToan;
 
     public long getIdGiaoDich() {
         return idGiaoDich;
@@ -94,5 +95,13 @@ public class ChiTietDonHangOutput {
 
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public String getLoaiThanhToan() {
+        return loaiThanhToan;
+    }
+
+    public void setLoaiThanhToan(String loaiThanhToan) {
+        this.loaiThanhToan = loaiThanhToan;
     }
 }

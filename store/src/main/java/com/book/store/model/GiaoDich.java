@@ -45,6 +45,12 @@ public class GiaoDich {
 	@Column(name="ngayTao")
 	private LocalDate ngayTao;
 
+	@Column(name="loaiThanhToan")
+	private String loaiThanhToan;
+
+	@Column(name="paymentId")
+	private String paymentId;
+
 	public long getIdGiaoDich() {
 		return idGiaoDich;
 	}
@@ -123,5 +129,21 @@ public class GiaoDich {
 
 	public void setNgayTao(LocalDate ngayTao) {
 		this.ngayTao = ngayTao;
+	}
+
+	public String getLoaiThanhToan() {
+		return loaiThanhToan;
+	}
+
+	public void setLoaiThanhToan(String loaiThanhToan) {
+		this.loaiThanhToan = loaiThanhToan;
+	}
+
+	public String getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
 	}
 }
