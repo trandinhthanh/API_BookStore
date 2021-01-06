@@ -51,7 +51,7 @@ public class TransactionServiceImpl implements TransactionService {
 		LocalDate toDay = LocalDate.now();
 		try {
 				giaoDich.setTrangThai("0");
-				giaoDich.setNgayTao(LocalDate.now());
+				giaoDich.setNgayTao(toDay.plusDays(1));
 				GiaoDich giaoDichOutput = transactionRepository.save(giaoDich);
 				sendMailDonHang(giaoDichOutput);
 			List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(giaoDich.getIdKhachHang());
