@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,12 +25,12 @@ public class HinhAnhServiceImpl implements HinhAnhService {
     @Autowired
     HinhAnhRepository hinhAnhRepository;
 
-    private static final String URL = System.getProperty("user.dir") + "\\src\\main\\resources\\image\\";
+    private static final String URL = "image/";
     @Override
     public byte[] getImg(String id) {
         if(id != null) {
             try {
-                java.net.URL res = getClass().getClassLoader().getResource("image/"+id);
+                java.net.URL res = getClass().getClassLoader().getResource(URL + id);
                 Path path = Paths.get(res.toURI());
                 byte[] fileImage = Files.readAllBytes(path);
                 return fileImage;
@@ -48,9 +50,11 @@ public class HinhAnhServiceImpl implements HinhAnhService {
             }
             try {
                 byte[] bytes = file.getBytes();
-                boolean fileExists = new File(URL + file.getOriginalFilename()).isFile();
-                if(!fileExists) {
-                    Path path = Paths.get(URL + file.getOriginalFilename());
+                java.net.URL checkRes = getClass().getClassLoader().getResource(URL + file.getOriginalFilename());
+                if(checkRes == null) {
+                    URI uri = ClassLoader.getSystemResource(URL).toURI();
+                    String mainPath = Paths.get(uri).toString();
+                    Path path = Paths.get(mainPath ,file.getOriginalFilename());
                     Files.write(path, bytes);
                 }
                 HinhAnh hinhAnh = new HinhAnh();
@@ -58,7 +62,7 @@ public class HinhAnhServiceImpl implements HinhAnhService {
                 hinhAnh.setLink(file.getOriginalFilename());
                 hinhAnh.setSapXep(i++);
                 hinhAnhRepository.save(hinhAnh);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }

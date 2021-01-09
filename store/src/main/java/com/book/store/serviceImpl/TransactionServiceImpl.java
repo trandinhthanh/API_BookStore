@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
 				giaoDich.setTrangThai("0");
 				giaoDich.setNgayTao(toDay.plusDays(1));
 				GiaoDich giaoDichOutput = transactionRepository.save(giaoDich);
-				//sendMailDonHang(giaoDichOutput);
+				sendMailDonHang(giaoDichOutput);
 			List<ChiTietDonHang> chiTietDonHang = transactionRepository.getListChiTietDonHang(giaoDich.getIdKhachHang());
 			for (ChiTietDonHang donHang: chiTietDonHang) {
 				double thanhTien = 0;
